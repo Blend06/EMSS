@@ -2,6 +2,7 @@
 .DS_Store
 .env
 .env.backup
+/react/node_modules
 .env.production
 .phpactor.json
 .phpunit.result.cache
