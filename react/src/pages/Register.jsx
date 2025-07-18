@@ -26,7 +26,7 @@ const Register = () => {
     acceptMarketing: false
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -34,14 +34,14 @@ const Register = () => {
     }));
   };
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = (name, value) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -257,7 +257,7 @@ const Register = () => {
                     name="acceptTerms"
                     checked={formData.acceptTerms}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, acceptTerms: checked as boolean }))
+                      setFormData(prev => ({ ...prev, acceptTerms: checked }))
                     }
                     className="mt-1"
                   />
@@ -278,7 +278,7 @@ const Register = () => {
                     name="acceptMarketing"
                     checked={formData.acceptMarketing}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, acceptMarketing: checked as boolean }))
+                      setFormData(prev => ({ ...prev, acceptMarketing: checked }))
                     }
                     className="mt-1"
                   />

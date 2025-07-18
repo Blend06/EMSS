@@ -17,7 +17,7 @@ const Login = () => {
     rememberMe: false
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -25,7 +25,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Here you would typically handle authentication
@@ -111,7 +111,7 @@ const Login = () => {
                     name="rememberMe"
                     checked={formData.rememberMe}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, rememberMe: checked as boolean }))
+                      setFormData(prev => ({ ...prev, rememberMe: checked }))
                     }
                   />
                   <Label htmlFor="rememberMe" className="text-sm">
