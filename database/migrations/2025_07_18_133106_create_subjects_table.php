@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id('subject_id');
             $table->string('name')->unique();
-            $table->string('file_path');
+            $table->string('syllabus_file_path');
             $table->timestamps();
         });
     }

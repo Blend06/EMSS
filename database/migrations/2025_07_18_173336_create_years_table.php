@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('years', function (Blueprint $table) {
             $table->id('year_id');
             $table->string('academic_year');
-            $table->foreignId('generation_id')->constrained('generations')->onDelete('cascade');
             $table->timestamps();
         });
     }
