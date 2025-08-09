@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('lecture_id');
             $table->string('title');
             $table->string('file_path')->nullable();
-            $table->foreignId('professor_subject_id')->constrained('professors_subjects')->onDelete('cascade');
-
+            $table->unsignedBigInteger('professor_subject_id');
+            $table->foreign('professor_subject_id')->references('professor_subject_id')->on('professors_subjects')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id('group_id');
             $table->string('group');
-            $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade');
+            $table->unsignedBigInteger('semester_id');
+            $table->foreign('semester_id')->references('semester_id')->on('semester')->onDelete('cascade');
             $table->unique(['group', 'semester_id']);
             $table->timestamps();
         });

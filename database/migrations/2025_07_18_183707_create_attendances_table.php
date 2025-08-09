@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendance_id');
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->integer('absences');
-            $table->foreignId('professor_subject_id')->constrained('professors_subjects')->onDelete('cascade');
+            $table->unsignedBigInteger('professor_subject_id');
+            $table->foreign('professor_subject_id')->references('professor_subject_id')->on('professors_subjects')->onDelete('cascade');
             $table->timestamps();
         });
     }

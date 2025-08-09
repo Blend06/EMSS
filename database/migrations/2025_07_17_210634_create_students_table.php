@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id('student_id');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('id_card_number')->unique();
             $table->enum('conduct_grade', ['E', 'S', 'N', 'U'])->default('E');
-            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade')->nullable();
-            $table->foreignId('generation_id')->constrained('generations')->onDelete(action: 'cascade');
+            $table->unsignedBigInteger('group_id');
+            $table->foreign('group_id')->references('group_id')->on('groups')->onDelete('cascade');
+            $table->unsignedBigInteger('generation_id');
+            $table->foreign('generation_id')->references('generation_id')->on('generations')->onDelete('cascade');
             $table->string('caretaker_name');
             $table->string('caretaker_phone');
             $table->timestamps();

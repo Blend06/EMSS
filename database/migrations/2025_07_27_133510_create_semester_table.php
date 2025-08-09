@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('semester', function (Blueprint $table) {
-             $table->id('semester_id');
+            $table->id('semester_id');
             $table->string('semester')->unique();
-            $table->foreignId('year_id')->constrained('years')->onDelete('cascade');
+            $table->unsignedBigInteger('year_id');
+            $table->foreign('year_id')->references('year_id')->on('years')->onDelete('cascade');
             $table->timestamps();
         });
     }
