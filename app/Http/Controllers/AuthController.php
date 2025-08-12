@@ -4,40 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     // Register new user
-    public function register(Request $request)
-    {
-        $fields = $request->validate([
+    public function register (Request $request) {
+
+        $data = $request->validate([
             'firstname' => 'required|string|max:255',
-            'lastname'  => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'birthdate' => 'required|date',
-            'email'     => 'required|string|email|unique:users,email',
-            'phone'     => 'nullable|string',
-            'password'  => 'required|string|confirmed|min:6',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:32',
+            'password' => 'required|string|confirmed|min:6'
         ]);
 
-        $user = User::create([
-            'firstname' => $fields['firstname'],
-            'lastname'  => $fields['lastname'],
-            'birthdate' => $fields['birthdate'],
-            'email'     => $fields['email'],
-            'phone'     => $fields['phone'] ?? null,
-            'password'  => $fields['password'],
-            'isAdmin'   => false,
-        ]);
-
-        // Create token
+       return DB::transaction(function() use ($data) {
+        $user = User::create($data);
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ], 201);
+            'user' => $user,
+            'token' => $token,], 201);
+       });
+
+
     }
 
     // Login user
