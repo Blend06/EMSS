@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import {
   Eye,
@@ -34,8 +33,6 @@ const Register = () => {
     phone: "",
     password: "",
     confirmPassword: "",
-    acceptTerms: false,
-    acceptMarketing: false,
   });
 
   const handleInputChange = (e) => {
@@ -77,7 +74,6 @@ const Register = () => {
           "Welcome to Academix Pro. Please check your email to verify your account.",
       });
 
-      // Optional: reset form or redirect here
 
     } catch (error) {
       if (

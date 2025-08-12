@@ -27,7 +27,7 @@ class AuthController extends Controller
             'birthdate' => $fields['birthdate'],
             'email'     => $fields['email'],
             'phone'     => $fields['phone'] ?? null,
-            'password'  => $fields['password'], // hashed automatically by User model
+            'password'  => $fields['password'],
             'isAdmin'   => false,
         ]);
 
