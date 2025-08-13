@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, GraduationCap } from "lucide-react";
 
@@ -16,14 +15,13 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false,
   });
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 
@@ -34,7 +32,6 @@ const Login = () => {
       const payload = {
         email: formData.email,
         password: formData.password,
-        remember: formData.rememberMe,
       };
 
       const response = await axios.post("http://localhost:8000/api/login", payload);
@@ -47,7 +44,11 @@ const Login = () => {
         description: "Welcome back to Academix Pro.",
       });
 
-      navigate("/");
+      if (response.data.user && response.data.user.isAdmin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       let message = "Something went wrong. Please try again.";
 
@@ -131,21 +132,8 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="rememberMe"
-                    name="rememberMe"
-                    checked={formData.rememberMe}
-                    onCheckedChange={(checked) =>
-                      setFormData((prev) => ({ ...prev, rememberMe: checked }))
-                    }
-                  />
-                  <Label htmlFor="rememberMe" className="text-sm">
-                    Remember me
-                  </Label>
-                </div>
+              {/* Forgot Password */}
+              <div className="flex items-center justify-end">
                 <Link
                   to="/forgot-password"
                   className="text-sm text-primary hover:underline"
