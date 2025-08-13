@@ -1,16 +1,19 @@
 // Navigation.jsx - Complete fixed version
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, GraduationCap } from "lucide-react";
-import { useStateContext } from '../Contexts/ContextProvider.jsx';
+import { useStateContext } from "../Contexts/ContextProvider.jsx";
 import axiosClient from '../axios.js';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { user, token, setToken, setUser } = useStateContext();
+
+  console.log("token:", token);
 
   const onLogout = (ev) => {
     ev.preventDefault();
@@ -19,19 +22,19 @@ const Navigation = () => {
       .then(() => {
         setUser({});
         setToken(null);
-        // Remove both keys to be safe
-        localStorage.removeItem('token');
-        localStorage.removeItem('ACCESS_TOKEN');
+        navigate('/login');
       })
       .catch((error) => {
         console.error('Logout failed:', error);
-        // Still clear local state even if server request fails
         setUser({});
         setToken(null);
-        localStorage.removeItem('token');
-        localStorage.removeItem('ACCESS_TOKEN');
       });
   };
+
+  const onApply = (ev) => {
+    ev.preventDefault();
+    navigate('/apply');
+  }
 
   const isActive = (path) => location.pathname === path;
 
@@ -73,6 +76,7 @@ const Navigation = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {token ? (
+              <>
               <Button
                 onClick={onLogout}
                 variant="outline"
@@ -80,6 +84,15 @@ const Navigation = () => {
               >
                 Logout
               </Button>
+              <Button
+                onClick={onApply}
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+              >
+                Apply
+              </Button>
+              
+              </>
             ) : (
               <Link to="/login">
                 <Button variant="default">

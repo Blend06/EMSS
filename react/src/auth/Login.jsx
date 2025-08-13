@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosClient from "../axios.js";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,15 +7,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, GraduationCap } from "lucide-react";
+import { useStateContext } from "../Contexts/ContextProvider";
 
 const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const { setUser, setToken } = useStateContext();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,34 +29,32 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    ev.preventDefault();
-        setLoading(true);
-        const payload = {
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-        };
-        console.log("Payload:", payload);
-        axiosClient.post('/login', payload)
-        .then(({ data }) => {
-            console.log("Response data:", data);
-            setUser(data.user);
-           setToken(data.token);
+  e.preventDefault();
 
-            navigate('/');
+  try {
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+    };
 
-        })
-          .catch(err => {
-            const response = err.response;
-            if (response && response.status === 422) {
-                console.log("Validation Errors:", response.data.errors);
-                setError(response.data.errors);
-            } else {
-                console.error('An unexpected error occurred:', err);
-                setError('An unexpected error occurred');
-            }
-            setLoading(false);
-        });
-  };
+    const { data } = await axiosClient.post("/login", payload);
+
+    console.log("Response data:", data);
+
+    setUser(data.user);
+    setToken(data.token);
+
+    navigate("/");
+  } catch (err) {
+    if (err.response && err.response.status === 422) {
+      console.log("Validation Errors:", err.response.data.errors);
+      setError(err.response.data.errors);
+    } else {
+      console.error("An unexpected error occurred:", err);
+      setError("An unexpected error occurred");
+    }
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4">
