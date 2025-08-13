@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,32 +11,56 @@ import { Eye, EyeOff, Mail, Lock, GraduationCap } from "lucide-react";
 
 const Login = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false
+    email: "",
+    password: "",
+    rememberMe: false,
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Here you would typically handle authentication
-    toast({
-      title: "Login Successful!",
-      description: "Welcome back to Academix Pro.",
-    });
 
-    // For now, we'll just show the toast
-    // In a real app, you'd redirect to the dashboard
+    try {
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        remember: formData.rememberMe,
+      };
+
+      const response = await axios.post("http://localhost:8000/api/login", payload);
+
+      // Store token or user info in localStorage/sessionStorage
+      localStorage.setItem("token", response.data.token);
+
+      toast({
+        title: "Login Successful!",
+        description: "Welcome back to Academix Pro.",
+      });
+
+      navigate("/");
+    } catch (error) {
+      let message = "Something went wrong. Please try again.";
+
+      if (error.response && error.response.data && error.response.data.message) {
+        message = error.response.data.message;
+      }
+
+      toast({
+        title: "Login Failed",
+        description: message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -62,6 +87,7 @@ const Login = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
+                {/* Email */}
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <div className="relative mt-1">
@@ -79,6 +105,7 @@ const Login = () => {
                   </div>
                 </div>
 
+                {/* Password */}
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <div className="relative mt-1">
@@ -104,22 +131,23 @@ const Login = () => {
                 </div>
               </div>
 
+              {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="rememberMe"
                     name="rememberMe"
                     checked={formData.rememberMe}
-                    onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, rememberMe: checked }))
+                    onCheckedChange={(checked) =>
+                      setFormData((prev) => ({ ...prev, rememberMe: checked }))
                     }
                   />
                   <Label htmlFor="rememberMe" className="text-sm">
                     Remember me
                   </Label>
                 </div>
-                <Link 
-                  to="/forgot-password" 
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-primary hover:underline"
                 >
                   Forgot password?
@@ -133,30 +161,11 @@ const Login = () => {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{' '}
+                Don't have an account?{" "}
                 <Link to="/register" className="text-primary hover:underline font-medium">
                   Sign up for free
                 </Link>
               </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Demo Login */}
-        <Card className="mt-4 border-border">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-3">
-                Want to try a demo? Use these credentials:
-              </p>
-              <div className="grid grid-cols-2 gap-2 text-xs bg-muted p-3 rounded-md">
-                <div>
-                  <span className="font-medium">Email:</span> demo@academix.pro
-                </div>
-                <div>
-                  <span className="font-medium">Password:</span> demo123
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>
