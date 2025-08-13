@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('id_card_number')->unique();
             $table->enum('conduct_grade', ['E', 'S', 'N', 'U'])->default('E');
-            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('group_id')->references('group_id')->on('groups')->onDelete('cascade');
             $table->unsignedBigInteger('generation_id');
             $table->foreign('generation_id')->references('generation_id')->on('generations')->onDelete('cascade');

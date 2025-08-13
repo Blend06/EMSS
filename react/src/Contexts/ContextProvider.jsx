@@ -1,6 +1,6 @@
 // src/context/context.js
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axiosClient from "../axios-client.js"; 
+import axiosClient from "../axios.js"; 
 
 const StateContext = createContext({
     user: null,

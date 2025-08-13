@@ -1,11 +1,37 @@
+// Navigation.jsx - Complete fixed version
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, GraduationCap } from "lucide-react";
+import { useStateContext } from '../Contexts/ContextProvider.jsx';
+import axiosClient from '../axios.js';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+
+  const { user, token, setToken, setUser } = useStateContext();
+
+  const onLogout = (ev) => {
+    ev.preventDefault();
+
+    axiosClient.post('/logout')
+      .then(() => {
+        setUser({});
+        setToken(null);
+        // Remove both keys to be safe
+        localStorage.removeItem('token');
+        localStorage.removeItem('ACCESS_TOKEN');
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+        // Still clear local state even if server request fails
+        setUser({});
+        setToken(null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('ACCESS_TOKEN');
+      });
+  };
 
   const isActive = (path) => location.pathname === path;
 
@@ -44,11 +70,23 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Auth Buttons */}
+          {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
+            {token ? (
+              <Button
+                onClick={onLogout}
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="default">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -81,12 +119,27 @@ const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
+              
+              {/* Mobile Auth Buttons */}
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
-                <Link to="/login" onClick={() => setIsOpen(false)}>
-                  <Button variant="ghost" className="w-full">
-                    Login
+                {token ? (
+                  <Button
+                    onClick={() => {
+                      onLogout();
+                      setIsOpen(false);
+                    }}
+                    variant="ghost"
+                    className="w-full text-primary hover:bg-primary hover:text-white"
+                  >
+                    Logout
                   </Button>
-                </Link>
+                ) : (
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    <Button variant="ghost" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

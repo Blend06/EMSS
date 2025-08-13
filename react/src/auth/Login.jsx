@@ -26,42 +26,33 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    ev.preventDefault();
+        setLoading(true);
+        const payload = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+        };
+        console.log("Payload:", payload);
+        axiosClient.post('/login', payload)
+        .then(({ data }) => {
+            console.log("Response data:", data);
+            setUser(data.user);
+           setToken(data.token);
 
-    try {
-      const payload = {
-        email: formData.email,
-        password: formData.password,
-      };
+            navigate('/');
 
-      const response = await axios.post("http://localhost:8000/api/login", payload);
-
-      // Store token or user info in localStorage/sessionStorage
-      localStorage.setItem("token", response.data.token);
-
-      toast({
-        title: "Login Successful!",
-        description: "Welcome back to Academix Pro.",
-      });
-
-      if (response.data.user && response.data.user.isAdmin) {
-        navigate("/dashboard");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      let message = "Something went wrong. Please try again.";
-
-      if (error.response && error.response.data && error.response.data.message) {
-        message = error.response.data.message;
-      }
-
-      toast({
-        title: "Login Failed",
-        description: message,
-        variant: "destructive",
-      });
-    }
+        })
+          .catch(err => {
+            const response = err.response;
+            if (response && response.status === 422) {
+                console.log("Validation Errors:", response.data.errors);
+                setError(response.data.errors);
+            } else {
+                console.error('An unexpected error occurred:', err);
+                setError('An unexpected error occurred');
+            }
+            setLoading(false);
+        });
   };
 
   return (
