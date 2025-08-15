@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 
 // Public routes
@@ -16,6 +17,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Example: get current authenticated user info
     Route::get('/user', function (Request $request) {
         return $request->user();
-    });
+    }); 
 
+    // User CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class);
+});
 });

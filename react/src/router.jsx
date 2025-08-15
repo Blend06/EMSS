@@ -9,6 +9,9 @@ import Register from "./auth/Register";
 import Dashboard from "./auth/Dashboard";
 import NotFound from "./pages/NotFound";
 
+import UserPage from "./dashboard/user/UserPage";
+import UserForm from "./dashboard/user/UserForm";
+
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -26,6 +29,11 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
+
+        {/* User CRUD */}
+        <Route path="/users" element={<UserPage />} />
+        <Route path="/users/new" element={<UserForm />} />
+        <Route path="/users/edit/:id" element={<UserForm />} />
       </Routes>
     </>
   );

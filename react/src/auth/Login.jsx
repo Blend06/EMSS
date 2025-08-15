@@ -44,8 +44,11 @@ const Login = () => {
     setUser(data.user);
     setToken(data.token);
 
-    navigate("/");
-  } catch (err) {
+  if (Boolean(data.user.isAdmin)) {
+      navigate("/dashboard"); 
+    } else {
+      navigate("/"); 
+    } } catch (err) {
     if (err.response && err.response.status === 422) {
       console.log("Validation Errors:", err.response.data.errors);
       setError(err.response.data.errors);
