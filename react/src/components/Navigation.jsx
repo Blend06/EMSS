@@ -10,8 +10,9 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  
   const { user, token, setToken, setUser } = useStateContext();
+  const isAdmin = user?.isAdmin === true;
 
   console.log("token:", token);
 
@@ -84,6 +85,18 @@ const Navigation = () => {
               >
                 Logout
               </Button>
+              { isAdmin &&(
+                <Link to="/dashboard">
+                  <Button
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+              )
+
+              }
               <Button
                 onClick={onApply}
                 variant="outline"

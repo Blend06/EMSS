@@ -72,7 +72,7 @@ const Dashboard = () => {
             <Button
               variant="secondary"
               className="flex items-center gap-2"
-              //onClick={() => navigate("/students")}
+              onClick={() => navigate("/students")}
             >
               <UsersIcon className="h-5 w-5" /> Student
             </Button>
