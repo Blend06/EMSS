@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 
 import UserPage from "./dashboard/user/UserPage";
 import UserForm from "./dashboard/user/UserForm";
+import ProfessorPage from "./dashboard/user/professor/ProfessorPage";
+import ProfessorForm from "./dashboard/user/professor/ProfessorForm";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -34,6 +36,11 @@ const AppRoutes = () => {
         <Route path="/users" element={<UserPage />} />
         <Route path="/users/new" element={<UserForm />} />
         <Route path="/users/edit/:id" element={<UserForm />} />
+
+        {/* Professor CRUD */}
+        <Route path="/professors" element={<ProfessorPage />} />
+        <Route path="/professors/new" element={<ProfessorForm />} />
+        <Route path="/professors/edit/:id" element={<ProfessorForm />} />
       </Routes>
     </>
   );

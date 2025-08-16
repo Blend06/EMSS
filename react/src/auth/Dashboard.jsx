@@ -79,7 +79,7 @@ const Dashboard = () => {
             <Button
               variant="secondary"
               className="flex items-center gap-2"
-              //onClick={() => navigate("/professors")}
+              onClick={() => navigate("/professors")}
             >
               <BookOpen className="h-5 w-5" /> Professor
             </Button>

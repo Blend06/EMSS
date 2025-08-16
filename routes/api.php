@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProfessorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -22,5 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // User CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
+});
+
+    // Professor CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('professors', ProfessorController::class);
 });
 });
