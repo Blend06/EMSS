@@ -34,6 +34,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('students', StudentController::class);
 });
+
+// Group CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('groups', GroupController::class);
+});
+
+// Semester CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('groups', GroupController::class);
 });

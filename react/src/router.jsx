@@ -18,6 +18,9 @@ import StudentForm from "./dashboard/user/student/StudentForm";
 import GroupPage from "./dashboard/group/GroupPage";
 import GroupForm from "./dashboard/group/GroupForm";
 
+import SemesterForm from "./dashboard/semester/SemesterForm";
+import SemesterPage from "./dashboard/semester/SemesterPage";
+
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -55,6 +58,11 @@ const AppRoutes = () => {
         <Route path="/groups" element={<GroupPage />} />
         <Route path="/groups/new" element={<GroupForm />} />
         <Route path="/groups/edit/:id" element={<GroupForm />} />
+
+        {/* Semester CRUD */}
+        <Route path="/semesters" element={<SemesterPage />} />
+        <Route path="/semesters/new" element={<SemesterForm />} />
+        <Route path="/semesters/edit/:id" element={<SemesterForm />} />
       </Routes>
     </>
   );
