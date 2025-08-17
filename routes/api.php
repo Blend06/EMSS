@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StudentController;
-
+use App\Http\Controllers\Api\GroupController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -33,5 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
  // Student CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('students', StudentController::class);
+});
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('groups', GroupController::class);
 });
 });

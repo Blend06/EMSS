@@ -1,26 +1,30 @@
 import { useState } from "react";
-import { 
-  Button 
-} from "@/components/ui/button";
-import { 
-  Card, CardContent, CardDescription, CardHeader, CardTitle 
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
+import {
   Settings,
   Bell,
   LogOut,
   User as UserIcon,
   Users as UsersIcon,
-  BookOpen
+  BookOpen,
+  Layers,
+  Calendar,
+  GraduationCap,
+  ClipboardList,
+  ListChecks,
+  Clock,
+  FileText,
+  School,
 } from "lucide-react";
-import { useStateContext } from "../Contexts/ContextProvider"; 
+import { useStateContext } from "../Contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { user } = useStateContext(); 
-  const navigate = useNavigate(); 
+  const { user } = useStateContext();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -60,8 +64,8 @@ const Dashboard = () => {
             Here's what's happening at Springfield High School today.
           </p>
 
-          {/* User Roles Buttons */}
-          <div className="flex gap-4">
+          {/* Role / Entity Buttons */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             <Button
               variant="secondary"
               className="flex items-center gap-2"
@@ -83,10 +87,80 @@ const Dashboard = () => {
             >
               <BookOpen className="h-5 w-5" /> Professor
             </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/groups")}
+            >
+              <Layers className="h-5 w-5" /> Group
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/subjects")}
+            >
+              <BookOpen className="h-5 w-5" /> Subject
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/years")}
+            >
+              <Calendar className="h-5 w-5" /> Year
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/semesters")}
+            >
+              <ClipboardList className="h-5 w-5" /> Semester
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/generations")}
+            >
+              <GraduationCap className="h-5 w-5" /> Generation
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/classes")}
+            >
+              <School className="h-5 w-5" /> Class
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/attendance")}
+            >
+              <ListChecks className="h-5 w-5" /> Attendance
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/schedules")}
+            >
+              <Clock className="h-5 w-5" /> Schedule
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/grades")}
+            >
+              <FileText className="h-5 w-5" /> Grade
+            </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/lectures")}
+            >
+              <BookOpen className="h-5 w-5" /> Lecture
+            </Button>
           </div>
         </div>
 
-        {/* Note about backend functionality */}
+        {/* Note */}
         <Card className="mt-8 border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20">
           <CardContent className="pt-6">
             <div className="text-center">
@@ -94,8 +168,9 @@ const Dashboard = () => {
                 🚀 Ready for Full Functionality?
               </h3>
               <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-4">
-                To enable full CRUD operations, user authentication, and data persistence, 
-                connect your project to Supabase using the green button in the top right.
+                To enable full CRUD operations, user authentication, and data
+                persistence, connect your project to Supabase using the green
+                button in the top right.
               </p>
               <Button variant="educational" size="sm">
                 Learn More About Backend Integration
