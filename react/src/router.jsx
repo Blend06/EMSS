@@ -20,6 +20,8 @@ import GroupForm from "./dashboard/group/GroupForm";
 
 import SemesterForm from "./dashboard/semester/SemesterForm";
 import SemesterPage from "./dashboard/semester/SemesterPage";
+import YearForm from "./dashboard/year/YearForm";
+import YearPage from "./dashboard/year/YearPage";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -60,9 +62,13 @@ const AppRoutes = () => {
         <Route path="/groups/edit/:id" element={<GroupForm />} />
 
         {/* Semester CRUD */}
-        <Route path="/semesters" element={<SemesterPage />} />
-        <Route path="/semesters/new" element={<SemesterForm />} />
-        <Route path="/semesters/edit/:id" element={<SemesterForm />} />
+        <Route path="/semester" element={<SemesterPage />} />
+        <Route path="/semester/new" element={<SemesterForm />} />
+        <Route path="/semester/edit/:id" element={<SemesterForm />} />
+         {/* Year CRUD */}
+        <Route path="/years" element={<YearPage />} />
+        <Route path="/years/new" element={<YearForm />} />
+        <Route path="/years/edit/:id" element={<YearForm />} />       
       </Routes>
     </>
   );

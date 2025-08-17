@@ -8,13 +8,13 @@ class StoreSemesterRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // allow request (change if you use policies)
+        return true;
     }
 
     public function rules(): array
     {
         return [
-            'semester' => 'required|string|unique:semester,semester|max:255',
+            'semester' => 'required|string|max:255',
             'year_id' => 'required|exists:years,year_id',
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSemesterRequest extends FormRequest
 {
@@ -16,8 +17,16 @@ class UpdateSemesterRequest extends FormRequest
         $semesterId = $this->route('semester')->semester_id ?? null;
 
         return [
-            'semester' => 'sometimes|string|unique:semester,semester,' . $semesterId . ',semester_id|max:255',
-            'year_id' => 'sometimes|exists:years,year_id',
+            'semester' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('semesters', 'semester')->ignore($semesterId, 'semester_id'),
+            ],
+            'year_id' => [
+                'required',
+                'exists:years,year_id',
+            ],
         ];
     }
 }

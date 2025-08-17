@@ -23,16 +23,16 @@ class UpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'        => 'sometimes|exists:users,id',
+            'user_id'        => 'required|exists:users,id',
             'id_card_number' => [
-                'sometimes',
+                'required',
                 'string',
                 'max:50',
                 Rule::unique('students', 'id_card_number')->ignore($this->route('student')->student_id, 'student_id'),
             ],
             'conduct_grade'  => 'nullable|integer|min:1|max:10',
-            'group_id'       => 'sometimes|exists:groups,group_id',
-            'generation_id'  => 'sometimes|exists:generations,generation_id',
+            'group_id'       => 'required|exists:groups,group_id',
+            'generation_id'  => 'required|exists:generations,generation_id',
             'caretaker_name' => 'sometimes|string|max:255',
             'caretaker_phone'=> 'sometimes|string|max:20',
         ];

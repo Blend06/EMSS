@@ -4,28 +4,27 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios.js";
 
 const SemesterPage = () => {
-  const [semesters, setSemesters] = useState([]);
+  const [semester, setSemester] = useState([]);
   const navigate = useNavigate();
 
-  const fetchSemesters = async () => {
+  const fetchSemester = async () => {
     try {
-      const res = await axiosClient.get("/semesters");
-      // If using Laravel resources, the data is usually inside res.data.data
-      setSemesters(res.data.data || res.data);
+      const res = await axiosClient.get("/semester");
+console.log(res.data);      setSemester(res.data.data || res.data);
     } catch (error) {
       console.error("Failed to fetch semesters:", error);
     }
   };
 
   useEffect(() => {
-    fetchSemesters();
+    fetchSemester();
   }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this Semester?")) {
       try {
-        await axiosClient.delete(`/semesters/${id}`);
-        fetchSemesters();
+        await axiosClient.delete(`/semester/${id}`);
+        fetchSemester();
       } catch (error) {
         console.error("Failed to delete semester:", error);
       }
@@ -36,7 +35,7 @@ const SemesterPage = () => {
     <div className="max-w-6xl mx-auto mt-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Semesters</h2>
-        <Button onClick={() => navigate("/semesters/new")}>Add Semester</Button>
+        <Button onClick={() => navigate("/semester/new")}>Add Semester</Button>
       </div>
 
       <table className="w-full border border-border rounded-lg">
@@ -50,7 +49,7 @@ const SemesterPage = () => {
           </tr>
         </thead>
         <tbody>
-          {semesters.map((sem) => (
+          {semester.map((sem) => (
             <tr key={sem.semester_id} className="hover:bg-accent/10">
               <td className="p-2 border-b">{sem.semester_id}</td>
               <td className="p-2 border-b">{sem.semester}</td>
@@ -64,7 +63,7 @@ const SemesterPage = () => {
                 <Button
                   size="sm"
                   onClick={() =>
-                    navigate(`/semesters/edit/${sem.semester_id}`)
+                    navigate(`/semester/edit/${sem.semester_id}`)
                   }
                 >
                   Edit

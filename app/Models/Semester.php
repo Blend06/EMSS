@@ -10,7 +10,7 @@ class Semester extends Model
     use HasFactory;
 
     // Table name (optional if it matches the plural of the model name)
-    protected $table = 'semesters';
+    protected $table = 'semester';
 
     // Primary key
     protected $primaryKey = 'semester_id';
