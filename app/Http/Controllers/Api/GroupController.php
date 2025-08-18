@@ -31,20 +31,17 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $groups)
-    {
-        $groups = $groups->load('semester');
-        return new GroupResource($groups);
-    }
+    public function show(Group $group)
+{
+    $group = $group->load('semester');
+    return new GroupResource($group);
+}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateGroupRequest $request, Group $groups)
-    {
-        $groups->update($request->validated());
-        return new GroupResource($groups);
-    }
+public function update(UpdateGroupRequest $request, Group $group)
+{
+    $group->update($request->validated());
+    return new GroupResource($group);
+}
 
     /**
      * Remove the specified resource from storage.

@@ -21,7 +21,15 @@ class StudentResource extends JsonResource
             'conduct_grade' => $this->conduct_grade,
             'academic_year' => $this->academic_year,
             'group_id' => $this->group_id,
+            'group' => [
+                'group_id' => $this->group->group_id,
+                'group' => $this->group->group,
+            ],
             'generation_id' => $this->generation_id,
+            'generation' => [
+                'generation_id' => $this->generation->generation_id,
+                'generation' => $this->generation->generation,
+            ],
             'caretaker_name' => $this->caretaker_name,
             'caretaker_phone' => $this->caretaker_phone,
             'user'         => [
@@ -29,6 +37,7 @@ class StudentResource extends JsonResource
                 'firstname'  => $this->user->firstname,
                 'email' => $this->user->email,
             ],
+            'status' => $this->status,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at,
         ];

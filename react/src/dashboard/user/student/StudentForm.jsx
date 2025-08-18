@@ -18,6 +18,7 @@ const StudentForm = () => {
     generation_id: "",
     caretaker_name: "",
     caretaker_phone: "",
+    status:"",
   });
 
   // Fetch all users
@@ -64,6 +65,7 @@ const StudentForm = () => {
         generation_id: student.generation_id || "",
         caretaker_name: student.caretaker_name || "",
         caretaker_phone: student.caretaker_phone || "",
+        status: student.status || "",
       });
     } catch (error) {
       console.error("Failed to fetch student:", error);
@@ -89,8 +91,9 @@ const StudentForm = () => {
     try {
       const payload = {
         ...formData,
-        conduct_grade: formData.conduct_grade || null, // optional
+        conduct_grade: formData.conduct_grade || 'E', // optional
       };
+      console.log("Submitting payload:", payload);
 
       if (id) {
         await axiosClient.put(`/students/${id}`, payload);
@@ -156,7 +159,7 @@ const StudentForm = () => {
             <option value="">-- Select Group --</option>
             {groups.map((g) => (
               <option key={g.group_id} value={g.group_id}>
-                {g.name}
+                {g.group}
               </option>
             ))}
           </select>
@@ -175,7 +178,7 @@ const StudentForm = () => {
             <option value="">-- Select Generation --</option>
             {generations.map((gen) => (
               <option key={gen.generation_id} value={gen.generation_id}>
-                {gen.name}
+                {gen.generation}
               </option>
             ))}
           </select>
@@ -207,18 +210,42 @@ const StudentForm = () => {
           />
         </div>
 
-        {/* Conduct Grade */}
+        {/* conduct grade drop dwon */}
         <div>
           <label className="block mb-1 font-medium">Conduct Grade</label>
-          <input
-            type="number"
+          <select
             name="conduct_grade"
             value={formData.conduct_grade}
             onChange={handleChange}
-            min="1"
-            max="10"
             className="w-full border rounded-md p-2"
-          />
+            required
+          >
+            <option value="">-- Select a Conduct Grade --</option>
+            <option value="E">E</option>
+            <option value="S">S</option>
+            <option value="N">N</option>
+            <option value="U">U</option>
+            
+          </select>
+        </div>
+        
+
+        {/* status */}
+        <div>
+          <label className="block mb-1 font-medium">Status</label>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="w-full border rounded-md p-2"
+            required
+          >
+            <option value="">-- Select Status --</option>
+            <option value="pending">pending</option>
+            <option value="accepted">accepted</option>
+            <option value="rejected">rejected</option>
+            
+          </select>
         </div>
 
         {/* Submit buttons */}

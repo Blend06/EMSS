@@ -21,7 +21,7 @@ class UpdateSemesterRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('semesters', 'semester')->ignore($semesterId, 'semester_id'),
+                Rule::unique('semester', 'semester')->ignore($semesterId, 'semester_id'),
             ],
             'year_id' => [
                 'required',

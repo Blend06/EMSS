@@ -19,7 +19,7 @@ const GroupForm = () => {
 
   // fetch semesters for dropdown
   useEffect(() => {
-    axiosClient.get("/semesters")
+    axiosClient.get("/semester")
       .then((res) => setSemesters(res.data.data))
       .catch((err) => console.error(err));
   }, []);
@@ -105,7 +105,7 @@ const GroupForm = () => {
             <option value="">Select Semester</option>
             {semesters.map((s) => (
               <option key={s.semester_id} value={s.semester_id}>
-                {s.name}
+                {s.semester}
               </option>
             ))}
           </select>

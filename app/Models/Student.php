@@ -30,6 +30,7 @@ class Student extends Model
         'generation_id',
         'caretaker_name',
         'caretaker_phone',
+        'status',
     ];
 
     /**

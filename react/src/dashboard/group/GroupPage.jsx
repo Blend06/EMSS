@@ -43,7 +43,10 @@ const GroupPage = () => {
           <tr className="bg-muted-foreground/10">
             <th className="p-2 border-b">Group Name</th>
             <th className="p-2 border-b">Semester</th>
+            <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -51,6 +54,8 @@ const GroupPage = () => {
             <tr key={g.group_id} className="hover:bg-accent/10">
               <td className="p-2 border-b">{g.group}</td>
               <td className="p-2 border-b">{g.semester ?? g.semester_id}</td>
+              <td className="p-2 border-b">{new Date(g.created_at).toLocaleDateString()}</td>
+              <td className="p-2 border-b">{new Date(g.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">
                 <Button size="sm" onClick={() => navigate(`/groups/edit/${g.group_id}`)}>
                   Edit

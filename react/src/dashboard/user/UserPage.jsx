@@ -47,6 +47,8 @@ const UserPage = () => {
             <th className="p-2 border-b">Phone</th>
             <th className="p-2 border-b">Birthdate</th>
             <th className="p-2 border-b">Admin</th>
+            <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
           </tr>
         </thead>
@@ -59,6 +61,8 @@ const UserPage = () => {
               <td className="p-2 border-b">{user.phone}</td>
               <td className="p-2 border-b">{user.birthdate}</td>
               <td className="p-2 border-b">{user.isAdmin ? "Yes" : "No"}</td>
+              <td className="p-2 border-b">{new Date(user.created_at).toLocaleDateString()}</td>
+              <td className="p-2 border-b">{new Date(user.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">
                 <Button size="sm" onClick={() => navigate(`/users/edit/${user.id}`)}>
                   Edit

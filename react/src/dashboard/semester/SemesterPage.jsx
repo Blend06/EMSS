@@ -45,6 +45,7 @@ console.log(res.data);      setSemester(res.data.data || res.data);
             <th className="p-2 border-b">Semester Name</th>
             <th className="p-2 border-b">Year</th>
             <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
           </tr>
         </thead>
@@ -58,6 +59,9 @@ console.log(res.data);      setSemester(res.data.data || res.data);
               </td>
               <td className="p-2 border-b">
                 {new Date(sem.created_at).toLocaleDateString()}
+              </td>
+              <td className="p-2 border-b">
+                {new Date(sem.updated_at).toLocaleDateString()}
               </td>
               <td className="p-2 border-b flex gap-2">
                 <Button

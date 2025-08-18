@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GenerationController;
 use App\Http\Controllers\Api\ProfessorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,5 +50,10 @@ Route::middleware('auth:sanctum')->group(function () {
 // Year CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('years', YearController::class);
+});
+
+// Generation CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('generations', GenerationController::class);
 });
 });

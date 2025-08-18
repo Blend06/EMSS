@@ -34,7 +34,7 @@ const StudentPage = () => {
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Professors</h2>
+        <h2 className="text-2xl font-bold">Students</h2>
         <Button onClick={() => navigate("/students/new")}>Add Student</Button>
       </div>
 
@@ -51,7 +51,9 @@ const StudentPage = () => {
             <th className="p-2 border-b">Caretaker Name</th>
             <th className="p-2 border-b">Caretaker Phone</th>
             <th className="p-2 border-b">Conduct Grade</th>
+            <th className="p-2 border-b">Status</th>
             <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
         </tr>
         </thead>
@@ -63,12 +65,14 @@ const StudentPage = () => {
               <td className="p-2 border-b">{stud.user?.firstname}</td>
               <td className="p-2 border-b">{stud.user?.email}</td>
               <td className="p-2 border-b">{stud.id_card_number}</td>
-              <td className="p-2 border-b">{stud.group?.name}</td>
-              <td className="p-2 border-b">{stud.generation?.name}</td>
+              <td className="p-2 border-b">{stud.group?.group}</td>
+              <td className="p-2 border-b">{stud.generation?.generation}</td>
               <td className="p-2 border-b">{stud.caretaker_name}</td>
               <td className="p-2 border-b">{stud.caretaker_phone}</td>
               <td className="p-2 border-b">{stud.conduct_grade}</td>  
+              <td className="p-2 border-b">{stud.status}</td> 
               <td className="p-2 border-b">{new Date(stud.created_at).toLocaleDateString()}</td>
+              <td className="p-2 border-b">{new Date(stud.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">
                 <Button
                   size="sm"

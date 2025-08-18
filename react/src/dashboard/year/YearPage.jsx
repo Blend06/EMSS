@@ -43,6 +43,7 @@ const YearPage = () => {
             <th className="p-2 border-b">ID</th>
             <th className="p-2 border-b">Academic Year</th>
             <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
           </tr>
         </thead>
@@ -52,6 +53,7 @@ const YearPage = () => {
               <td className="p-2 border-b">{year.year_id}</td>
               <td className="p-2 border-b">{year.academic_year}</td>
               <td className="p-2 border-b">{new Date(year.created_at).toLocaleDateString()}</td>
+              <td className="p-2 border-b">{new Date(year.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">
                 <Button size="sm" onClick={() => navigate(`/years/edit/${year.year_id}`)}>
                   Edit

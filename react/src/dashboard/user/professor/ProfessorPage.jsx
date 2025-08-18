@@ -47,6 +47,7 @@ const ProfessorPage = () => {
             <th className="p-2 border-b">Name</th>
             <th className="p-2 border-b">Email</th>
             <th className="p-2 border-b">Created At</th>
+            <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
           </tr>
         </thead>
@@ -58,6 +59,7 @@ const ProfessorPage = () => {
               <td className="p-2 border-b">{prof.user?.firstname}</td>
               <td className="p-2 border-b">{prof.user?.email}</td>
               <td className="p-2 border-b">{new Date(prof.created_at).toLocaleDateString()}</td>
+              <td className="p-2 border-b">{new Date(prof.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">
                 <Button
                   size="sm"

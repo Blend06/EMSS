@@ -22,6 +22,8 @@ import SemesterForm from "./dashboard/semester/SemesterForm";
 import SemesterPage from "./dashboard/semester/SemesterPage";
 import YearForm from "./dashboard/year/YearForm";
 import YearPage from "./dashboard/year/YearPage";
+import GenerationPage from "./dashboard/generation/GenerationPage";
+import GenerationForm from "./dashboard/generation/GenerationForm";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -68,7 +70,12 @@ const AppRoutes = () => {
          {/* Year CRUD */}
         <Route path="/years" element={<YearPage />} />
         <Route path="/years/new" element={<YearForm />} />
-        <Route path="/years/edit/:id" element={<YearForm />} />       
+        <Route path="/years/edit/:id" element={<YearForm />} />   
+
+        {/* Generation CRUD */}
+        <Route path="/generations" element={<GenerationPage />} />
+        <Route path="/generations/new" element={<GenerationForm />} />
+        <Route path="/generations/edit/:id" element={<GenerationForm />} />       
       </Routes>
     </>
   );

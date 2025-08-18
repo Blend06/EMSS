@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('semester', function (Blueprint $table) {
             $table->id('semester_id');
-            $table->string('semester')->unique();
+            $table->string('semester');
             $table->unsignedBigInteger('year_id');
             $table->foreign('year_id')->references('year_id')->on('years')->onDelete('cascade');
             $table->timestamps();
