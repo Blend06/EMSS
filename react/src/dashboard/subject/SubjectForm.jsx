@@ -7,11 +7,9 @@ const SubjectForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: "",
-  });
-  const [file, setFile] = useState(null);                 // selected file for upload
-  const [existingPath, setExistingPath] = useState("");   // stored path from API (for View link)
+  const [formData, setFormData] = useState({ name: "" });
+  const [file, setFile] = useState(null);
+  const [existingPath, setExistingPath] = useState("");
 
   const fetchSubject = async () => {
     if (!id) return;
@@ -38,41 +36,37 @@ const SubjectForm = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const payload = new FormData();
-    payload.append("name", formData.name.trim());
+    e.preventDefault();
+    try {
+      const payload = new FormData();
+      payload.append("name", formData.name.trim());
 
-    if (id) {
-      if (file) payload.append("syllabus_file", file);
-      // ⬇️ Spoof the verb: send POST + _method=PUT
-      payload.append("_method", "PUT");
-      await axiosClient.post(`/subjects/${id}`, payload);
-    } else {
-      if (!file) {
-        alert("Please choose a syllabus file (.pdf/.doc/.docx).");
-        return;
+      if (id) {
+        if (file) payload.append("syllabus_file_path", file); // <-- NEW KEY
+        payload.append("_method", "PUT");                      // spoof PUT
+        await axiosClient.post(`/subjects/${id}`, payload);
+      } else {
+        if (!file) {
+          alert("Please choose a syllabus file (.pdf/.doc/.docx).");
+          return;
+        }
+        payload.append("syllabus_file_path", file);            // <-- NEW KEY
+        await axiosClient.post("/subjects", payload);
       }
-      payload.append("syllabus_file", file);
-      await axiosClient.post("/subjects", payload);
+
+      navigate("/subjects");
+    } catch (error) {
+      console.error("Failed to save Subject:", error);
+      if (error.response?.data) {
+        alert(
+          error.response.status === 422
+            ? JSON.stringify(error.response.data, null, 2)
+            : "Save failed"
+        );
+      }
     }
+  };
 
-    navigate("/subjects");
-  } catch (error) {
-    console.error("Failed to save Subject:", error);
-    if (error.response?.data) {
-      alert(
-        error.response.status === 422
-          ? JSON.stringify(error.response.data, null, 2)
-          : "Save failed"
-      );
-    }
-  }
-};
-
-
-
-  // Build a working link to the stored file path
   const apiBase = (axiosClient.defaults.baseURL || "").replace(/\/$/, "");
   const currentFileUrl = existingPath
     ? (/^https?:\/\//i.test(existingPath)
@@ -111,7 +105,7 @@ const SubjectForm = () => {
           )}
           <input
             type="file"
-            name="syllabus_file"
+            name="syllabus_file_path"          // <-- NEW KEY (for consistency)
             accept=".pdf,.doc,.docx"
             onChange={handleFile}
             className="w-full border rounded-md p-2"

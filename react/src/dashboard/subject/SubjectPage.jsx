@@ -34,7 +34,9 @@ const SubjectPage = () => {
   const linkFromPath = (path) => {
     if (!path) return null;
     if (/^https?:\/\//i.test(path)) return path;
-    return `${apiBase}/${path.startsWith("storage/") ? path : `storage/${path.replace(/^\/+/, "")}`}`;
+    return `${apiBase}/${
+      path.startsWith("storage/") ? path : `storage/${path.replace(/^\/+/, "")}`
+    }`;
   };
 
   return (
@@ -57,7 +59,8 @@ const SubjectPage = () => {
         </thead>
         <tbody>
           {subjects.map((s) => {
-            const href = linkFromPath(s.syllabus_file_path);
+            const rawPath = s.syllabus_file_path || s.syllabus_file; // prefer new key, fallback old
+            const href = linkFromPath(rawPath);
             return (
               <tr key={s.subject_id} className="hover:bg-accent/10">
                 <td className="p-2 border-b">{s.subject_id}</td>

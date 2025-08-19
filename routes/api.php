@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\YearController;
+use App\Http\Controllers\Api\SubjectController;
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -56,4 +58,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('generations', GenerationController::class);
 });
+
+//Subject CRUD routes(API)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('subjects', SubjectController::class);
+    });
 });
