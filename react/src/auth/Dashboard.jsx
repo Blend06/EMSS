@@ -2,9 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import axiosClient from '../axios.js';
 import {
-  Settings,
-  Bell,
   LogOut,
   User as UserIcon,
   Users as UsersIcon,
@@ -17,14 +16,31 @@ import {
   Clock,
   FileText,
   School,
+  Home
 } from "lucide-react";
 import { useStateContext } from "../Contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { user } = useStateContext();
+  const { user, token, setToken, setUser } = useStateContext();
   const navigate = useNavigate();
+  
+  const onLogout = (ev) => {
+    ev.preventDefault();
+
+    axiosClient.post('/logout')
+      .then(() => {
+        setUser({});
+        setToken(null);
+        navigate('/login');
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+        setUser({});
+        setToken(null);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -37,16 +53,11 @@ const Dashboard = () => {
               <Badge variant="secondary">Academix Pro</Badge>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="h-5 w-5" />
+              
+              <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+                <Home className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <UserIcon className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={onLogout}>
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>

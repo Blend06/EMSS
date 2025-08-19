@@ -1,35 +1,37 @@
-// src/axiosClient.js
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:8000/api", 
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
+  baseURL: "http://localhost:8000/api",
+  // don't set a global Content-Type here; it breaks FormData uploads
 });
 
-// Automatically add token if stored in localStorage
 axiosClient.interceptors.request.use((config) => {
+  config.headers = config.headers || {};
+
   const token = localStorage.getItem("ACCESS_TOKEN");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  // Always accept JSON
+  config.headers.Accept = "application/json";
+
+  // Let the browser set the multipart boundary for FormData
+  if (config.data instanceof FormData) {
+    delete config.headers["Content-Type"];
+  } else {
+    config.headers["Content-Type"] = "application/json";
   }
+
   return config;
 });
 
-// Optionally handle errors globally
 axiosClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      // Token expired or unauthorized
-      if (error.response.status === 401) {
-        localStorage.removeItem("ACCESS_TOKEN");
-        window.location.href = "/login";
-      }
+  (res) => res,
+  (err) => {
+    if (err.response && err.response.status === 401) {
+      localStorage.removeItem("ACCESS_TOKEN");
+      window.location.href = "/login";
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 
