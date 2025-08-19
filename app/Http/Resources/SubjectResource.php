@@ -13,8 +13,8 @@ class SubjectResource extends JsonResource
             'subject_id' => $this->subject_id,
             'name' => $this->name,
             'syllabus_file_path' => $this->syllabus_file_path,
-            'created_at' => optional($this->created_at)->toISOString(),
-            'updated_at' => optional($this->updated_at)->toISOString(),
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
         ];
     }
 }

@@ -15,6 +15,8 @@ class UserResource extends JsonResource
             'birthdate' => $this->birthdate,
             'email'     => $this->email,
             'phone'     => $this->phone,
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
         ];
 
         // Expose isAdmin only if the authenticated user is admin

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ClassesController;
 use App\Http\Controllers\Api\GenerationController;
 use App\Http\Controllers\Api\ProfessorController;
+use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -10,7 +12,6 @@ use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\YearController;
-use App\Http\Controllers\Api\SubjectController;
 
 
 // Public routes
@@ -59,8 +60,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('generations', GenerationController::class);
 });
 
-//Subject CRUD routes(API)
+// Subject CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('subjects', SubjectController::class);
-    });
+    Route::apiResource('subjects', SubjectController::class);
+});
+
+// Classes CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('classes', ClassesController::class);
+});
+
+
 });

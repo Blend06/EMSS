@@ -26,7 +26,8 @@ import GenerationPage from "./dashboard/generation/GenerationPage";
 import GenerationForm from "./dashboard/generation/GenerationForm";
 import SubjectPage from "./dashboard/subject/SubjectPage";
 import SubjectForm from "./dashboard/subject/SubjectForm";
-
+import ClassesPage from "./dashboard/classes/ClassesPage";
+import ClassesForm from "./dashboard/classes/ClassesForm";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -78,12 +79,17 @@ const AppRoutes = () => {
         {/* Generation CRUD */}
         <Route path="/generations" element={<GenerationPage />} />
         <Route path="/generations/new" element={<GenerationForm />} />
-        <Route path="/generations/edit/:id" element={<GenerationForm />} />     
+        <Route path="/generations/edit/:id" element={<GenerationForm />} />       
 
         {/* Subject CRUD */}
         <Route path="/subjects" element={<SubjectPage />} />
         <Route path="/subjects/new" element={<SubjectForm />} />
-        <Route path="/subjects/edit/:id" element={<SubjectForm />} />       
+        <Route path="/subjects/edit/:id" element={<SubjectForm/>} />  
+
+        {/* Class CRUD */}
+        <Route path="/classes" element={<ClassesPage />} />
+        <Route path="/classes/new" element={<ClassesForm />} />
+        <Route path="/classes/edit/:id" element={<ClassesForm/>} />  
       </Routes>
     </>
   );
