@@ -168,6 +168,13 @@ const Dashboard = () => {
             >
               <BookOpen className="h-5 w-5" /> Lecture
             </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/professor_subjects")}
+            >
+              <ClipboardList className="h-5 w-5" /> Professor Subjects
+            </Button>
           </div>
         </div>
 

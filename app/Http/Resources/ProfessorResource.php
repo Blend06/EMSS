@@ -20,6 +20,7 @@ class ProfessorResource extends JsonResource
             'user'         => [
                 'id'    => $this->user->id,
                 'firstname'  => $this->user->firstname,
+                'lastname'  => $this->user->lastname,
                 'email' => $this->user->email,
             ],
             'created_at'   => $this->created_at,

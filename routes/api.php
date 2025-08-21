@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ClassesController;
 use App\Http\Controllers\Api\GenerationController;
+use App\Http\Controllers\Api\Professor_SubjectController;
 use App\Http\Controllers\Api\ProfessorController;
 use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Http\Request;
@@ -70,5 +71,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('classes', ClassesController::class);
 });
 
+// Professor_subjects CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('professors_subjects', Professor_SubjectController::class);
+});
 
 });
