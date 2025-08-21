@@ -30,6 +30,8 @@ import ClassesPage from "./dashboard/classes/ClassesPage";
 import ClassesForm from "./dashboard/classes/ClassesForm";
 import ProfessorSubjectPage from "./dashboard/professors_subjects/ProfessorSubjectPage";
 import ProfessorSubjectForm from "./dashboard/professors_subjects/ProfessorSubjectForm";
+import LectureForm from "./dashboard/lecture/LectureForm";
+import LecturePage from "./dashboard/lecture/LecturePage";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -97,6 +99,11 @@ const AppRoutes = () => {
         <Route path="/professor_subjects" element={<ProfessorSubjectPage />} />
         <Route path="/professor_subjects/new" element={<ProfessorSubjectForm />} />
         <Route path="/professor_subjects/edit/:id" element={<ProfessorSubjectForm/>} /> 
+
+        {/* Lecture CRUD */}
+        <Route path="/lectures" element={<LecturePage />} />
+        <Route path="/lectures/new" element={<LectureForm />} />
+        <Route path="/lectures/edit/:id" element={<LectureForm/>} /> 
       </Routes>
     </>
   );
