@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\LectureController;
+use App\Http\Controllers\Api\GradeController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -76,8 +77,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('professors_subjects', Professor_SubjectController::class);
 });
 
+//Lectures CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('lectures', LectureController::class);
+});
+
+//Grades CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('grades', GradeController::class);
 });
 
 });

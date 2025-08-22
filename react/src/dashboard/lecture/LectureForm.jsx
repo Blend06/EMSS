@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import axiosClient from "../../axios.js";
 
 const LectureForm = () => {
-  const { id } = useParams(); // lecture_id when editing
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [professorSubjects, setProfessorSubjects] = useState([]);
