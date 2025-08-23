@@ -109,11 +109,11 @@ const AppRoutes = () => {
         <Route path="/lectures/edit/:id" element={<LectureForm/>} /> 
 
         {/* Grade CRUD */}
-        {/*
+        
         <Route path="/grades" element={<GradePage />} />
         <Route path="/grades/new" element={<GradeForm />} />
         <Route path="/grades/edit/:id" element={<GradeForm/>} /> 
-        */}
+        
       </Routes>
     </>
   );
