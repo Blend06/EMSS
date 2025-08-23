@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ClassesController;
 use App\Http\Controllers\Api\GenerationController;
 use App\Http\Controllers\Api\Professor_SubjectController;
 use App\Http\Controllers\Api\ProfessorController;
+use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +86,11 @@ Route::middleware('auth:sanctum')->group(function () {
 //Grades CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('grades', GradeController::class);
+});
+
+//Schedules CRUD routes (API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('schedules', ScheduleController::class);
 });
 
 });

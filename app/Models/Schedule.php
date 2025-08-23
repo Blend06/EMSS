@@ -39,7 +39,7 @@ class Schedule extends Model
         return $this->belongsTo(Group::class, 'group_id', 'group_id');
     }
 
-    public function schoolClass()
+    public function classes()
     {
         return $this->belongsTo(Classes::class, 'class_id', 'class_id');
     }

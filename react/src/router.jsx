@@ -34,6 +34,8 @@ import LectureForm from "./dashboard/lecture/LectureForm";
 import LecturePage from "./dashboard/lecture/LecturePage";
 import GradeForm from "./dashboard/grade/GradeForm";
 import GradePage from "./dashboard/grade/GradePage";
+import SchedulePage from "./dashboard/schedule/SchedulePage";
+import ScheduleForm from "./dashboard/schedule/ScheduleForm";
 
 
 const AppRoutes = () => {
@@ -114,6 +116,10 @@ const AppRoutes = () => {
         <Route path="/grades/new" element={<GradeForm />} />
         <Route path="/grades/edit/:id" element={<GradeForm/>} /> 
         
+        {/* Schedule CRUD */}
+        <Route path="/schedules" element={<SchedulePage />} />
+        <Route path="/schedules/new" element={<ScheduleForm />} />
+        <Route path="/schedules/edit/:id" element={<ScheduleForm />} />
       </Routes>
     </>
   );
