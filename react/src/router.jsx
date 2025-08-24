@@ -36,6 +36,8 @@ import GradeForm from "./dashboard/grade/GradeForm";
 import GradePage from "./dashboard/grade/GradePage";
 import SchedulePage from "./dashboard/schedule/SchedulePage";
 import ScheduleForm from "./dashboard/schedule/ScheduleForm";
+import AttendanceForm from "./dashboard/attendance/AttendanceForm";
+import AttendancePage from "./dashboard/attendance/AttendancePage";
 
 
 const AppRoutes = () => {
@@ -120,6 +122,11 @@ const AppRoutes = () => {
         <Route path="/schedules" element={<SchedulePage />} />
         <Route path="/schedules/new" element={<ScheduleForm />} />
         <Route path="/schedules/edit/:id" element={<ScheduleForm />} />
+
+        {/* Attendance CRUD */}
+        <Route path="/attendances" element={<AttendancePage />} />
+        <Route path="/attendances/new" element={<AttendanceForm />} />
+        <Route path="/attendances/edit/:id" element={<AttendanceForm />} />
       </Routes>
     </>
   );

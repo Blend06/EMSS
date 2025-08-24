@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\LectureController;
 use App\Http\Controllers\Api\GradeController;
+use App\Http\Controllers\Api\AttendanceController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -93,4 +94,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('schedules', ScheduleController::class);
 });
 
+//Attendances CRUD rotues(API)
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('attendances', AttendanceController::class);
+});
 });

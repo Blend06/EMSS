@@ -143,7 +143,7 @@ const Dashboard = () => {
             <Button
               variant="secondary"
               className="flex items-center gap-2"
-              onClick={() => navigate("/attendance")}
+              onClick={() => navigate("/attendances")}
             >
               <ListChecks className="h-5 w-5" /> Attendance
             </Button>
