@@ -103,9 +103,9 @@ const AppRoutes = () => {
         <Route path="/classes/edit/:id" element={<ClassesForm/>} />  
 
         {/* Professor-Subject CRUD */}
-        <Route path="/professor_subjects" element={<ProfessorSubjectPage />} />
-        <Route path="/professor_subjects/new" element={<ProfessorSubjectForm />} />
-        <Route path="/professor_subjects/edit/:id" element={<ProfessorSubjectForm/>} /> 
+        <Route path="/professors_subjects" element={<ProfessorSubjectPage />} />
+        <Route path="/professors_subjects/new" element={<ProfessorSubjectForm />} />
+        <Route path="/professors_subjects/edit/:id" element={<ProfessorSubjectForm/>} /> 
 
         {/* Lecture CRUD */}
         <Route path="/lectures" element={<LecturePage />} />

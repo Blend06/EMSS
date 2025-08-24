@@ -34,7 +34,7 @@ const ProfessorSubjectPage = () => {
     <div className="max-w-6xl mx-auto mt-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Professor Subjects</h2>
-        <Button onClick={() => navigate("/professor_subjects/new")}>
+        <Button onClick={() => navigate("/professors_subjects/new")}>
           Add Professor Subject
         </Button>
       </div>
@@ -68,7 +68,7 @@ const ProfessorSubjectPage = () => {
                 <Button
                   size="sm"
                   onClick={() =>
-                    navigate(`/professor_subjects/edit/${ps.professor_subject_id}`)
+                    navigate(`/professors_subjects/edit/${ps.professor_subject_id}`)
                   }
                 >
                   Edit

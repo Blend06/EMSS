@@ -72,7 +72,7 @@ const ProfessorSubjectForm = () => {
       } else {
         await axiosClient.post("/professors_subjects", formData);
       }
-      navigate("/professor_subjects");
+      navigate("/professors_subjects");
     } catch (error) {
       console.error("Failed to save ProfessorSubject:", error);
       if (error.response?.data?.errors) {

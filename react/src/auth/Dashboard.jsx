@@ -171,7 +171,7 @@ const Dashboard = () => {
             <Button
               variant="secondary"
               className="flex items-center gap-2"
-              onClick={() => navigate("/professor_subjects")}
+              onClick={() => navigate("/professors_subjects")}
             >
               <ClipboardList className="h-5 w-5" /> Professor Subjects
             </Button>
