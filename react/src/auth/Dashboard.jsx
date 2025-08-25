@@ -175,6 +175,13 @@ const Dashboard = () => {
             >
               <ClipboardList className="h-5 w-5" /> Professor Subjects
             </Button>
+            <Button
+              variant="secondary"
+              className="flex items-center gap-2"
+              onClick={() => navigate("/pending_students")}
+            >
+              <ClipboardList className="h-5 w-5" /> Pending Students
+            </Button>
           </div>
         </div>
 

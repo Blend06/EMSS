@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('conduct_grade', ['E', 'S', 'N', 'U'])->default('E');
             $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('group_id')->references('group_id')->on('groups')->onDelete('cascade');
-            $table->unsignedBigInteger('generation_id');
+            $table->unsignedBigInteger('generation_id')->nullable()->default(null);
             $table->foreign('generation_id')->references('generation_id')->on('generations')->onDelete('cascade');
             $table->string('caretaker_name');
             $table->string('caretaker_phone');

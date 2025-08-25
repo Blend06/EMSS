@@ -28,10 +28,10 @@ class StoreStudentRequest extends FormRequest
                 'unique:students,user_id', 
             ],
             'id_card_number' => 'required|string|max:50|unique:students,id_card_number',
-            'group_id'       => 'required|exists:groups,group_id',
+            'group_id'       => 'nullable|exists:groups,group_id',
             'conduct_grade'  => 'nullable|string|size:1',
-            'status'  => 'required|string|max:20',
-            'generation_id'  => 'required|exists:generations,generation_id',
+            'status'  => 'nullable|string|max:20',
+            'generation_id'  => 'nullable|exists:generations,generation_id',
             'caretaker_name' => 'required|string|max:255',
             'caretaker_phone'=> 'required|string|max:20',
         ];

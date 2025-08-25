@@ -38,6 +38,8 @@ import SchedulePage from "./dashboard/schedule/SchedulePage";
 import ScheduleForm from "./dashboard/schedule/ScheduleForm";
 import AttendanceForm from "./dashboard/attendance/AttendanceForm";
 import AttendancePage from "./dashboard/attendance/AttendancePage";
+import Apply from "./pages/Apply";
+import PendingStudentsPage from "./pages/PendingStudents";
 
 
 const AppRoutes = () => {
@@ -52,10 +54,12 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/apply" element={<Apply />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pending_students" element={<PendingStudentsPage />} />
         <Route path="*" element={<NotFound />} />
 
         {/* User CRUD */}

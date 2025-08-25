@@ -53,4 +53,31 @@ class StudentController extends Controller
         $student-> delete();
         return response()->json(null, 204);
     }
+
+    public function pending()
+{
+    $students = Student::with(['user', 'group', 'generation'])
+        ->where('status', 'pending')
+        ->get();
+
+    return StudentResource::collection($students);
+}
+
+public function accept($id)
+{
+    $student = Student::findOrFail($id);
+    $student->status = 'accepted';
+    $student->save();
+
+    return new StudentResource($student);
+}
+
+public function reject($id)
+{
+    $student = Student::findOrFail($id);
+    $student->status = 'rejected';
+    $student->save();
+
+    return new StudentResource($student);
+}
 }
