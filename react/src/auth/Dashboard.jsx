@@ -184,25 +184,6 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
-
-        {/* Note */}
-        <Card className="mt-8 border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-                🚀 Ready for Full Functionality?
-              </h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-4">
-                To enable full CRUD operations, user authentication, and data
-                persistence, connect your project to Supabase using the green
-                button in the top right.
-              </p>
-              <Button variant="educational" size="sm">
-                Learn More About Backend Integration
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

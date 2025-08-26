@@ -40,6 +40,7 @@ import AttendanceForm from "./dashboard/attendance/AttendanceForm";
 import AttendancePage from "./dashboard/attendance/AttendancePage";
 import Apply from "./pages/Apply";
 import PendingStudentsPage from "./pages/PendingStudents";
+import StudentDashboard from "./auth/StudentDashboard"; 
 
 
 const AppRoutes = () => {
@@ -59,6 +60,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/student_dashboard" element={<StudentDashboard />} />
         <Route path="/pending_students" element={<PendingStudentsPage />} />
         <Route path="*" element={<NotFound />} />
 
