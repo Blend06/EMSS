@@ -40,7 +40,12 @@ import AttendanceForm from "./dashboard/attendance/AttendanceForm";
 import AttendancePage from "./dashboard/attendance/AttendancePage";
 import Apply from "./pages/Apply";
 import PendingStudentsPage from "./pages/PendingStudents";
-import StudentDashboard from "./auth/StudentDashboard"; 
+import StudentDashboard from "./auth/StudentDashboard/StudentDashboard"; 
+import StudentProfile from "./auth/StudentDashboard/StudentProfile";
+import StudentGroup from "./auth/StudentDashboard/StudentGroup";
+import StudentSchedule from "./auth/StudentDashboard/StudentSchedule";
+import StudentGrades from "./auth/StudentDashboard/StudentGrades";
+import StudentAttendance from "./auth/StudentDashboard/StudentAttendance";
 
 
 const AppRoutes = () => {
@@ -60,9 +65,17 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/student_dashboard" element={<StudentDashboard />} />
         <Route path="/pending_students" element={<PendingStudentsPage />} />
         <Route path="*" element={<NotFound />} />
+
+        {/* Student Dashboard Routes */}
+      <Route path="/student_dashboard" element={<StudentDashboard />}>
+        <Route path="profile" element={<StudentProfile />} />
+        <Route path="choose_group" element={<StudentGroup />} />
+        <Route path="schedule" element={<StudentSchedule />} />
+        <Route path="grades" element={<StudentGrades />} />
+        <Route path="attendance" element={<StudentAttendance />} />
+      </Route>
 
         {/* User CRUD */}
         <Route path="/users" element={<UserPage />} />
