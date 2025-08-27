@@ -2,45 +2,29 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StudentResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'student_id' => $this->student_id,
-            'user_id'      => $this->user_id,
-            'id_card_number' => $this->id_card_number,
+            'user_id' => $this->user_id,
             'conduct_grade' => $this->conduct_grade,
-            'academic_year' => $this->academic_year,
-            'group_id' => $this->group_id,
-            'group' => [
-                'group_id' => $this->group?->group_id,
-                'group' => $this->group?->group,
-            ],
-            'generation_id' => $this->generation_id,
-            'generation' => [
-                'generation_id' => $this->generation?->generation_id,
-                'generation' => $this->generation?->generation,
-            ],
             'caretaker_name' => $this->caretaker_name,
             'caretaker_phone' => $this->caretaker_phone,
-            'user'         => [
-                'id'    => $this->user->id,
-                'firstname'  => $this->user->firstname,
-                'lastname'  => $this->user->lastname,
-                'email' => $this->user->email,
-            ],
-            'status' => $this->status,
-            'created_at'   => $this->created_at,
-            'updated_at'   => $this->updated_at,
+            'group' => $this->group ? [
+                'id' => $this->group->id,
+                'group' => $this->group->group
+            ] : null,
+            'generation' => $this->generation ? [
+                'id' => $this->generation->id,
+                'generation' => $this->generation->generation
+            ] : null,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

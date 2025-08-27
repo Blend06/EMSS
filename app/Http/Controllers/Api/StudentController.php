@@ -62,6 +62,21 @@ class StudentController extends Controller
 
     return StudentResource::collection($students);
 }
+ public function getByUserId($user_id)
+    {
+        // Retrieve the student along with relations like group and generation
+        $student = Student::with(['group', 'generation'])
+            ->where('user_id', $user_id)
+            ->first();
+
+        if (!$student) {
+            return response()->json([
+                'message' => 'Student not found.'
+            ], 404);
+        }
+
+    return new StudentResource($student);
+    }
 
 public function accept($id)
 {

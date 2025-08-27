@@ -45,8 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students/pending', [StudentController::class, 'pending']);
     Route::patch('/students/{student}/accept', [StudentController::class, 'accept']);
     Route::patch('/students/{student}/reject', [StudentController::class, 'reject']);
+    Route::get('/students/user/{user_id}', [StudentController::class, 'getByUserId']);
     Route::apiResource('students', StudentController::class);
-    
 });
 
 // Group CRUD routes (API)
