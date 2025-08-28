@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Resources\StudentResource;
@@ -94,5 +95,23 @@ public function reject($id)
     $student->save();
 
     return new StudentResource($student);
+}
+
+public function updateGroup(Request $request, $user_id)
+{
+    $validated = $request->validate([
+        'group_id' => 'required|exists:groups,group_id',
+    ]);
+
+    // Find student by user_id
+    $student = Student::where('user_id', $user_id)->firstOrFail();
+
+    $student->group_id = $validated['group_id'];
+    $student->save();
+
+    return response()->json([
+        'message' => 'Group updated successfully',
+        'student' => $student->load('group.semester.year'),
+    ]);
 }
 }

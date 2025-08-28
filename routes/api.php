@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/students/{student}/accept', [StudentController::class, 'accept']);
     Route::patch('/students/{student}/reject', [StudentController::class, 'reject']);
     Route::get('/students/user/{user_id}', [StudentController::class, 'getByUserId']);
+    Route::put('/students/{user_id}/group', [StudentController::class, 'updateGroup']);
     Route::apiResource('students', StudentController::class);
 });
 

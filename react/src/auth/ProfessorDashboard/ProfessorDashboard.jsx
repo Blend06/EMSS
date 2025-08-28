@@ -21,9 +21,9 @@ const ProfessorDashboard = () => {
 
   const navigationItems = [
     { id: "profile", label: "Profile", icon: User, route: "/professor_dashboard/profile" },
-    { id: "add_lecture", label: "Add Lecture", icon: GroupIcon, route: "/professor_dashboard/add_lecture" },
-    { id: "grade_student", label: "Grade Student", icon: Calendar, route: "/professor_dashboard/grade_student" },
-    { id: "add_attendance", label: "Attendances", icon: GraduationCap, route: "/professor_dashboard/add_attendance" },
+    { id: "lecture", label: "Lecture", icon: BookOpen, route: "/lectures_dashboard" },
+    { id: "grade_student", label: "Grade Student", icon: GraduationCap, route: "/professor_dashboard/grade_student" },
+    { id: "add_attendance", label: "Attendances", icon: CheckSquare, route: "/professor_dashboard/add_attendance" },
   ];
 
   

@@ -13,14 +13,16 @@ class GroupResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {
-        return [
-            'group_id' => $this->group_id,
-            'group' => $this->group,
-            'semester_id' => $this->semester_id,
-            'semester' => $this->semester?->semester, 
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
-        ];
-    }
+{
+    return [
+        'group_id'   => $this->group_id,
+        'group'      => $this->group,
+        'semester_id'=> $this->semester_id,
+        'semester'   => $this->semester?->semester,
+        'year_id'     => $this->semester?->year?->year_id,
+        'year'        => $this->semester?->year?->academic_year,
+        'updated_at' => $this->updated_at,
+        'created_at' => $this->created_at,
+    ];
+}
 }

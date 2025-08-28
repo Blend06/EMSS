@@ -14,10 +14,10 @@ class GroupController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $groups = Group::with('semester')->get();
-        return GroupResource::collection($groups);
-    }
+{
+    $groups = Group::with('semester.year')->get();
+    return GroupResource::collection($groups);
+}
 
     /**
      * Store a newly created resource in storage.
@@ -33,7 +33,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
 {
-    $group = $group->load('semester');
+    $group = $group->load('semester.year');
     return new GroupResource($group);
 }
 

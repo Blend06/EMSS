@@ -154,7 +154,7 @@ const StudentForm = () => {
             value={formData.group_id}
             onChange={handleChange}
             className="w-full border rounded-md p-2"
-            required
+            
           >
             <option value="">-- Select Group --</option>
             {groups.map((g) => (
