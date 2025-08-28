@@ -46,6 +46,11 @@ import StudentGroup from "./auth/StudentDashboard/StudentGroup";
 import StudentSchedule from "./auth/StudentDashboard/StudentSchedule";
 import StudentGrades from "./auth/StudentDashboard/StudentGrades";
 import StudentAttendance from "./auth/StudentDashboard/StudentAttendance";
+import ProfessorDashboard from "./auth/ProfessorDashboard/ProfessorDashboard";
+import ProfessorProfile from "./auth/ProfessorDashboard/ProfessorProfile";
+import AddLecture from "./auth/ProfessorDashboard/AddLecture";
+import GradeStudent from "./auth/ProfessorDashboard/GradeStudent";
+import AddAttendance from "./auth/ProfessorDashboard/AddAttendance";
 
 
 const AppRoutes = () => {
@@ -76,6 +81,15 @@ const AppRoutes = () => {
         <Route path="grades" element={<StudentGrades />} />
         <Route path="attendance" element={<StudentAttendance />} />
       </Route>
+        
+        {/* Professor Dashboard Routes */}
+      <Route path="/professor_dashboard" element={<ProfessorDashboard />}>
+        <Route path="profile" element={<ProfessorProfile />} />
+        <Route path="add_lecture" element={<AddLecture />} />
+        <Route path="grade_student" element={<GradeStudent />} />
+        <Route path="add_attendance" element={<AddAttendance />} />
+      </Route>
+
 
         {/* User CRUD */}
         <Route path="/users" element={<UserPage />} />
