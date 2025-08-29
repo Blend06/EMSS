@@ -12,9 +12,9 @@ class SubjectResource extends JsonResource
         return [
             'subject_id' => $this->subject_id,
             'name' => $this->name,
-            'syllabus_file_path' => $this->syllabus_file_path,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at,
+            'semester_id' => $this->semester_id,
         ];
     }
 }

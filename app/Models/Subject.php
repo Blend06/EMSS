@@ -24,6 +24,10 @@ class Subject extends Model
     // Mass-assignable fields
     protected $fillable = [
         'name',
-        'syllabus_file_path',
+        'semester_id',
     ];
+
+    public function semester() {
+        return $this->belongsTo(Semester::class, 'semester_id', 'semester_id');
+    }
 }

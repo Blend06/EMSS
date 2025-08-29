@@ -15,7 +15,7 @@ class StoreSubjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|unique:subjects,name',
-            'syllabus_file_path' => 'required|string|max:255',
+            'semester_id' => 'required|exists:semester,semester_id',
         ];
     }
 }
