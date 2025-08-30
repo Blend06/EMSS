@@ -48,7 +48,7 @@ const StudentDashboard = () => {
     { id: "schedule", label: "Schedule", icon: Calendar, route: "/student_dashboard/schedule" },
     { id: "grades", label: "Grades", icon: GraduationCap, route: "/student_dashboard/grades" },
     { id: "attendance", label: "Attendance", icon: CheckSquare, route: "/student_dashboard/attendance" },
-    { id: "lectures", label: "Lectures", icon: BookOpen, route: "/lectures_dashboard" },
+    { id: "lectures", label: "Lectures", icon: BookOpen, route: "/student_dashboard/subject_lectures" },
   ];
 
   // Conditionally filter navigation items based on student.group_id
