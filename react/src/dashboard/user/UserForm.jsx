@@ -69,20 +69,29 @@ const UserForm = () => {
   }
 
   try {
-    // Prepare payload for API
-    const payload = { ...userData };
+    // Build payload
+    const base = {
+      firstname: userData.firstname,
+      lastname: userData.lastname,
+      birthdate: userData.birthdate,
+      email: userData.email,
+      phone: userData.phone,
+      isAdmin: userData.isAdmin,
+    };
 
-    // Remove password if empty
-    if (!payload.password) delete payload.password;
-
-    // Remove password_confirmation (not in DB)
-    delete payload.password_confirmation;
+    // For create: send password + confirmation
+    // For update: send them only if password is provided
+    const payload = userData.password
+      ? {
+          ...base,
+          password: userData.password,
+          password_confirmation: userData.password_confirmation,
+        }
+      : base;
 
     if (id) {
-      // Update user
       await axiosClient.put(`/users/${id}`, payload);
     } else {
-      // Create new user
       await axiosClient.post("/users", payload);
     }
 

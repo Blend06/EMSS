@@ -14,7 +14,10 @@ class SubjectResource extends JsonResource
             'name' => $this->name,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at,
-            'semester_id' => $this->semester_id,
+            'semester_id'=> $this->semester_id,
+            'semester'   => $this->semester?->semester,
+            'year_id'     => $this->semester?->year?->year_id,
+            'year'        => $this->semester?->year?->academic_year,
         ];
     }
 }
