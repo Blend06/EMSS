@@ -1,6 +1,4 @@
-// src/auth/StudentDashboard/SubjectLectures.jsx
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios.js";
@@ -53,7 +51,7 @@ export default function SubjectLectures() {
       <h2 className="text-2xl font-bold mb-6">Subjects by Year → Semester</h2>
 
       <div className="grid gap-4 sm:grid-cols-3 items-end mb-6">
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-3">
           <Label htmlFor="year_id">Select Year</Label>
           <select
             id="year_id"
@@ -71,9 +69,6 @@ export default function SubjectLectures() {
             ))}
           </select>
         </div>
-        <Button type="button" onClick={() => fetchSemesters(yearId)} disabled={!yearId || loadingData}>
-          {loadingData ? "Loading..." : "Reload"}
-        </Button>
       </div>
 
       {!yearId && <p className="text-muted-foreground">Pick a year to see semesters and subjects.</p>}
@@ -90,6 +85,7 @@ export default function SubjectLectures() {
                 type="button"
                 onClick={() => navigate(`/student_dashboard/subjects/${sem.semester_id}`)}
                 className="text-left text-xl font-semibold hover:underline"
+                title="View subjects in this semester"
               >
                 {sem.semester} <span className="text-sm text-muted-foreground">#{sem.semester_id}</span>
               </button>
@@ -100,10 +96,15 @@ export default function SubjectLectures() {
               {(sem.subjects ?? []).map((sub) => (
                 <li key={sub.subject_id} className="p-3 rounded border">
                   <div className="flex items-center justify-between">
-                    <div className="font-medium">
+                    <button
+                      type="button"
+                      className="font-medium text-left hover:underline"
+                      onClick={() => navigate(`/student_dashboard/subjects/${sem.semester_id}#subject-${sub.subject_id}`)}
+                      title="Scroll to this subject on the semester page"
+                    >
                       {sub.name}
                       <span className="ml-2 text-xs text-muted-foreground">(subject #{sub.subject_id})</span>
-                    </div>
+                    </button>
                     <div className="text-xs text-muted-foreground">Semester #{sub.semester_id}</div>
                   </div>
 

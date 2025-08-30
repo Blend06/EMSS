@@ -20,6 +20,7 @@ class SemesterResource extends JsonResource
             'year_id' => $this->year_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'subjects' => $this->whenLoaded('subjects', fn() => SubjectResource::collection($this->subjects)),
         ];
     }
 }

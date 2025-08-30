@@ -18,6 +18,8 @@ class SubjectResource extends JsonResource
             'semester'   => $this->semester?->semester,
             'year_id'     => $this->semester?->year?->year_id,
             'year'        => $this->semester?->year?->academic_year,
+            'professors'  => $this->whenLoaded('professors', fn() => ProfessorResource::collection($this->professors)),
+
         ];
     }
 }

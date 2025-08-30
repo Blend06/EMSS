@@ -32,6 +32,6 @@ class Subject extends Model
     }
 
     public function professors() {
-        return $this->belongsToMany(Professor::class, 'professors_subjects', 'subject_id', 'professor_id');
+        return $this->belongsToMany(Professor::class, 'professors_subjects', 'subject_id', 'professor_id')->withPivot('professor_subject_id'); 
     }
 }

@@ -1,5 +1,5 @@
 // src/router.jsx
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Landing from "./pages/Landing";
 import About from "./pages/About";
@@ -51,7 +51,7 @@ import ProfessorProfile from "./auth/ProfessorDashboard/ProfessorProfile";
 import AddLecture from "./auth/ProfessorDashboard/AddLecture";
 import GradeStudent from "./auth/ProfessorDashboard/GradeStudent";
 import AddAttendance from "./auth/ProfessorDashboard/AddAttendance";
-
+import SubjectLectures from "./auth/StudentDashboard/SubjectLectures";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -80,6 +80,7 @@ const AppRoutes = () => {
         <Route path="schedule" element={<StudentSchedule />} />
         <Route path="grades" element={<StudentGrades />} />
         <Route path="attendance" element={<StudentAttendance />} />
+        
       </Route>
         
         {/* Professor Dashboard Routes */}
