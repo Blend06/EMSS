@@ -6,49 +6,39 @@ use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Http\Resources\SubjectResource;
 
 class SubjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(Subject::all(), 200);
+        $subjects = Subject::with('semester')->paginate(15);
+        return SubjectResource::collection($subjects);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSubjectRequest $request)
     {
         $subject = Subject::create($request->validated());
-        return response()->json($subject, 201);
+        $subject->load('semester');
+        return (new SubjectResource($subject))->response()->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Subject $subject)
     {
-        return response()->json($subject, 200);
+        $subject->load('semester');
+        return new SubjectResource($subject);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
         $subject->update($request->validated());
-        return response()->json($subject, 200);
+        $subject->load('semester');
+        return new SubjectResource($subject);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Subject $subject)
     {
         $subject->delete();
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

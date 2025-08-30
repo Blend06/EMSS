@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\LectureController;
 use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\SubjectLectureController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -103,4 +104,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('attendances', AttendanceController::class);
 });
+// Subject → Professors browse routes
+    Route::get('/years/{year}/semesters', [SubjectLectureController::class, 'semesterByYear']);
+    Route::get('/semesters/{semester}/subjects', [SubjectLectureController::class, 'subjectsBySemester']);
 });
+    

@@ -30,4 +30,8 @@ class Professor extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function subjects() {
+        return $this->belongsToMany(Subject::class, "professors_subjects", 'professor_id', 'subject_id');
+    }
 }

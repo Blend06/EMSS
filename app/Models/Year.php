@@ -25,4 +25,8 @@ class Year extends Model
     protected $fillable = [
         'academic_year',
     ];
+
+    public function semesters() {
+        return $this->hasMany(Semester::class, 'year_id', 'year_id');
+    }
 }
