@@ -99,7 +99,7 @@ export default function SubjectLectures() {
                     <button
                       type="button"
                       className="font-medium text-left hover:underline"
-                      onClick={() => navigate(`/student_dashboard/subjects/${sem.semester_id}#subject-${sub.subject_id}`)}
+                      onClick={() => navigate(`/student_dashboard/student_subjects/${sem.semester_id}#subject-${sub.subject_id}`)}
                       title="Scroll to this subject on the semester page"
                     >
                       {sub.name}

@@ -1,132 +1,131 @@
-// src/auth/StudentDashboard/SubjectLectures.jsx
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  BookOpen,
+  Calendar,
+  GraduationCap,
+  CheckSquare,
+  User,
+  GroupIcon,
+} from "lucide-react";
+import { useNavigate, Outlet } from "react-router-dom";
+import { useStateContext } from "../../Contexts/ContextProvider.jsx";
 import axiosClient from "../../axios.js";
 
-const profLabel = (p) => {
-  const u = p?.user || {};
-  const full = [u.firstname, u.lastname].filter(Boolean).join(" ");
-  return u.name ?? (full || `Professor #${p.professor_id}`);
-};
-
-export default function SubjectLectures() {
-  const [years, setYears] = useState([]);
-  const [yearId, setYearId] = useState("");
-  const [semesters, setSemesters] = useState([]);
-  const [loadingYears, setLoadingYears] = useState(false);
-  const [loadingData, setLoadingData] = useState(false);
-  const [errors, setErrors] = useState({});
+const StudentDashboard = () => {
+  const { user, token } = useStateContext();
+  const [student, setStudent] = useState(null);
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeRoute, setActiveRoute] = useState("dashboard");
 
-  const fetchYears = async () => {
-    setLoadingYears(true);
-    try {
-      const res = await axiosClient.get("/years");
-      setYears(res.data?.data || []);
-    } finally {
-      setLoadingYears(false);
+  // Fetch logged-in student
+  useEffect(() => {
+    if (user?.id) {
+      fetchStudent();
     }
-  };
+  }, [user]);
 
-  const fetchSemesters = async (id) => {
-    if (!id) return;
-    setLoadingData(true);
+  const fetchStudent = async () => {
     try {
-      const res = await axiosClient.get("/semester", {
-        params: { year_id: id, with_subjects: 1 },
+      const response = await axiosClient.get(`/students/user/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      setSemesters(res.data?.data || []);
-    } catch (e) {
-      setErrors({ general: "Failed to load semesters." });
-    } finally {
-      setLoadingData(false);
+      setStudent(response.data.data);
+    } catch (error) {
+      console.error("Error fetching student:", error);
     }
   };
 
-  useEffect(() => { fetchYears(); }, []);
-  useEffect(() => { if (yearId) fetchSemesters(yearId); }, [yearId]);
+  // Define all navigation items
+  const allNavigationItems = [
+    { id: "profile", label: "Profile", icon: User, route: "/student_dashboard/profile" },
+    { id: "choose_group", label: "Choose Group", icon: GroupIcon, route: "/student_dashboard/choose_group" },
+    { id: "schedule", label: "Schedule", icon: Calendar, route: "/student_dashboard/schedule" },
+    { id: "grades", label: "Grades", icon: GraduationCap, route: "/student_dashboard/grades" },
+    { id: "attendance", label: "Attendance", icon: CheckSquare, route: "/student_dashboard/attendance" },
+    { id: "lectures", label: "Lectures", icon: BookOpen, route: "/lectures_dashboard" },
+  ];
+
+  // Conditionally filter navigation items based on student.group_id
+  const navigationItems = student
+    ? student.group === null
+      ? allNavigationItems.filter((item) => item.id === "choose_group" || item.id === "profile")
+      : allNavigationItems.filter((item) => item.id !== "choose_group")
+    : []; // empty while loading
+
+  // Show loading state if student not fetched yet
+  if (!student) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-background border border-border rounded-lg">
-      <h2 className="text-2xl font-bold mb-6">Subjects by Year → Semester</h2>
-
-      <div className="grid gap-4 sm:grid-cols-3 items-end mb-6">
-        <div className="sm:col-span-2">
-          <Label htmlFor="year_id">Select Year</Label>
-          <select
-            id="year_id"
-            name="year_id"
-            value={yearId}
-            onChange={(e) => setYearId(e.target.value)}
-            className="w-full border rounded p-2"
-            required
-          >
-            <option value="">Choose Year</option>
-            {years.map((y) => (
-              <option key={y.year_id} value={y.year_id}>
-                {y.academic_year ?? `Year #${y.year_id}`}
-              </option>
-            ))}
-          </select>
-        </div>
-        <Button type="button" onClick={() => fetchSemesters(yearId)} disabled={!yearId || loadingData}>
-          {loadingData ? "Loading..." : "Reload"}
-        </Button>
-      </div>
-
-      {!yearId && <p className="text-muted-foreground">Pick a year to see semesters and subjects.</p>}
-      {loadingYears && <p>Loading years…</p>}
-      {yearId && !loadingData && semesters.length === 0 && (
-        <p className="text-muted-foreground">No semesters found for this year.</p>
-      )}
-
-      <div className="space-y-6">
-        {semesters.map((sem) => (
-          <div key={sem.semester_id} className="border rounded-lg p-4">
-            <div className="flex items-center justify-between mb-3">
-              <button
-                type="button"
-                onClick={() => navigate(`/student_dashboard/subjects/${sem.semester_id}`)}
-                className="text-left text-xl font-semibold hover:underline"
-              >
-                {sem.semester} <span className="text-sm text-muted-foreground">#{sem.semester_id}</span>
-              </button>
-              <span className="text-sm text-muted-foreground">Year ID: {sem.year_id}</span>
-            </div>
-
-            <ul className="space-y-3">
-              {(sem.subjects ?? []).map((sub) => (
-                <li key={sub.subject_id} className="p-3 rounded border">
-                  <div className="flex items-center justify-between">
-                    <div className="font-medium">
-                      {sub.name}
-                      <span className="ml-2 text-xs text-muted-foreground">(subject #{sub.subject_id})</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground">Semester #{sub.semester_id}</div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {(sub.professors ?? []).map((p) => (
-                      <span
-                        key={p.professor_subject_id ?? String(p.professor_id)}
-                        className="px-2 py-1 rounded-full border text-sm"
-                        data-psid={p.professor_subject_id ?? ""}
-                        title={p.professor_subject_id ? `assignment #${p.professor_subject_id}` : ""}
-                      >
-                        {profLabel(p)}
-                      </span>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ul>
+    <div className="min-h-screen bg-background flex">
+      {/* Sidebar */}
+      <div
+        className={`${
+          sidebarOpen ? "w-64" : "w-16"
+        } bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out flex flex-col`}
+      >
+        {/* Sidebar Header */}
+        <div className="p-4 border-b border-sidebar-border">
+          <div className="flex items-center justify-between">
+            {sidebarOpen && (
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <GraduationCap className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <span className="font-bold text-sidebar-foreground">Student Portal</span>
+              </div>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-sidebar-foreground hover:bg-sidebar-accent"
+            >
+              {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </Button>
           </div>
-        ))}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4">
+          <div className="space-y-2">
+            {navigationItems.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = activeRoute === item.id;
+              return (
+                <Button
+                  key={item.id}
+                  variant={isActive ? "default" : "ghost"}
+                  className={`w-full justify-start ${sidebarOpen ? "px-3" : "px-2"} ${
+                    isActive
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  }`}
+                  onClick={() => {
+                    setActiveRoute(item.id);
+                    navigate(item.route);
+                  }}
+                >
+                  <IconComponent className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+                  {sidebarOpen && <span>{item.label}</span>}
+                </Button>
+              );
+            })}
+          </div>
+        </nav>
       </div>
 
-      {errors.general && <p className="text-red-600 text-sm mt-4">{errors.general}</p>}
+      {/* Dashboard Content */}
+      <main className="flex-1 p-6 space-y-6 overflow-auto">
+        <Outlet />
+      </main>
     </div>
   );
-}
+};
+
+export default StudentDashboard;
