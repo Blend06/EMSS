@@ -27,7 +27,6 @@ class Student extends Model
         'id_card_number',
         'conduct_grade',
         'group_id',
-        'generation_id',
         'caretaker_name',
         'caretaker_phone',
         'status',
@@ -45,10 +44,5 @@ class Student extends Model
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id', 'group_id');
-    }
-
-    public function generation()
-    {
-        return $this->belongsTo(Generation::class, 'generation_id', 'generation_id');
     }
 }

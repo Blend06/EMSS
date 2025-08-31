@@ -27,10 +27,6 @@ class StudentResource extends JsonResource
                 'id' => $this->group->id,
                 'group' => $this->group->group
             ] : null,
-            'generation' => $this->generation ? [
-                'id' => $this->generation->id,
-                'generation' => $this->generation->generation
-            ] : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

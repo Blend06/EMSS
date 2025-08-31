@@ -27,10 +27,6 @@ class Professor_subject extends Model
         'subject_id',
     ];
 
-    /**
-     * Relationships
-     */
-
     public function professor()
     {
         return $this->belongsTo(Professor::class, 'professor_id', 'professor_id');

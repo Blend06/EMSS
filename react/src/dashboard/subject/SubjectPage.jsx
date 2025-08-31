@@ -42,7 +42,7 @@ const SubjectPage = () => {
           <tr className="bg-muted-foreground/10">
             <th className="p-2 border-b">ID</th>
             <th className="p-2 border-b">Subject name</th>
-            <th className="p-2 border-b">Syllabus</th>
+            <th className="p-2 border-b">Semester</th>
             <th className="p-2 border-b">Created At</th>
             <th className="p-2 border-b">Updated At</th>
             <th className="p-2 border-b">Actions</th>
@@ -53,9 +53,7 @@ const SubjectPage = () => {
             <tr key={Subject.Subject_id} className="hover:bg-accent/10">
               <td className="p-2 border-b">{Subject.subject_id}</td>
               <td className="p-2 border-b">{Subject.name}</td>
-              <td className="p-2 border-b">{<a href={`/${Subject.syllabus_file_path}`} target="_blank" rel="noopener noreferrer" className="me-3">
-                                 view
-                                </a>}</td>
+              <td className="p-2 border-b">{Subject.semester || "N/A"}</td>
               <td className="p-2 border-b">{new Date(Subject.created_at).toLocaleDateString()}</td>
               <td className="p-2 border-b">{new Date(Subject.updated_at).toLocaleDateString()}</td>
               <td className="p-2 border-b flex gap-2">

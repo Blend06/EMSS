@@ -47,7 +47,6 @@ const StudentPage = () => {
             <th className="p-2 border-b">Email</th>
             <th className="p-2 border-b">ID Card Number</th>
             <th className="p-2 border-b">Group</th>
-            <th className="p-2 border-b">Generation</th>
             <th className="p-2 border-b">Caretaker Name</th>
             <th className="p-2 border-b">Caretaker Phone</th>
             <th className="p-2 border-b">Conduct Grade</th>
@@ -66,7 +65,6 @@ const StudentPage = () => {
               <td className="p-2 border-b">{stud.user?.email}</td>
               <td className="p-2 border-b">{stud.id_card_number}</td>
               <td className="p-2 border-b">{stud.group?.group}</td>
-              <td className="p-2 border-b">{stud.generation?.generation}</td>
               <td className="p-2 border-b">{stud.caretaker_name}</td>
               <td className="p-2 border-b">{stud.caretaker_phone}</td>
               <td className="p-2 border-b">{stud.conduct_grade}</td>  

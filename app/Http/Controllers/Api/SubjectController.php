@@ -12,7 +12,7 @@ class SubjectController extends Controller
 {
     public function index(\Illuminate\Http\Request $request)
 {
-    $q = \App\Models\Subject::query()
+    $q = Subject::query()
         ->with(['semester.year'])
         ->orderBy('name');
 

@@ -9,13 +9,11 @@ const StudentForm = () => {
 
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [generations, setGenerations] = useState([]);
   const [formData, setFormData] = useState({
     user_id: "",
     id_card_number: "",
     conduct_grade: "",
     group_id: "",
-    generation_id: "",
     caretaker_name: "",
     caretaker_phone: "",
     status:"",
@@ -41,16 +39,6 @@ const StudentForm = () => {
     }
   };
 
-  // Fetch all generations
-  const fetchGenerations = async () => {
-    try {
-      const res = await axiosClient.get("/generations");
-      setGenerations(res.data.data || res.data);
-    } catch (error) {
-      console.error("Failed to fetch generations:", error);
-    }
-  };
-
   // Fetch student data if editing
   const fetchStudent = async () => {
     if (!id) return;
@@ -62,7 +50,6 @@ const StudentForm = () => {
         id_card_number: student.id_card_number || "",
         conduct_grade: student.conduct_grade || "",
         group_id: student.group_id || "",
-        generation_id: student.generation_id || "",
         caretaker_name: student.caretaker_name || "",
         caretaker_phone: student.caretaker_phone || "",
         status: student.status || "",
@@ -75,7 +62,6 @@ const StudentForm = () => {
   useEffect(() => {
     fetchUsers();
     fetchGroups();
-    fetchGenerations();
     fetchStudent();
   }, [id]);
 
@@ -165,24 +151,6 @@ const StudentForm = () => {
           </select>
         </div>
 
-        {/* Generation dropdown */}
-        <div>
-          <label className="block mb-1 font-medium">Generation</label>
-          <select
-            name="generation_id"
-            value={formData.generation_id}
-            onChange={handleChange}
-            className="w-full border rounded-md p-2"
-            required
-          >
-            <option value="">-- Select Generation --</option>
-            {generations.map((gen) => (
-              <option key={gen.generation_id} value={gen.generation_id}>
-                {gen.generation}
-              </option>
-            ))}
-          </select>
-        </div>
 
         {/* Caretaker Name */}
         <div>

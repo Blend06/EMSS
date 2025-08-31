@@ -55,7 +55,7 @@ console.log(res.data);      setSemester(res.data.data || res.data);
               <td className="p-2 border-b">{sem.semester_id}</td>
               <td className="p-2 border-b">{sem.semester}</td>
               <td className="p-2 border-b">
-                {sem.year?.year_name || sem.year_id}
+                {sem.year?.academic_year || "N/A"}
               </td>
               <td className="p-2 border-b">
                 {new Date(sem.created_at).toLocaleDateString()}

@@ -129,13 +129,6 @@ const Dashboard = () => {
             <Button
               variant="secondary"
               className="flex items-center gap-2"
-              onClick={() => navigate("/generations")}
-            >
-              <GraduationCap className="h-5 w-5" /> Generation
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
               onClick={() => navigate("/classes")}
             >
               <School className="h-5 w-5" /> Class

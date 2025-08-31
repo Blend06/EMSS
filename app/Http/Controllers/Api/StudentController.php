@@ -57,7 +57,7 @@ class StudentController extends Controller
 
     public function pending()
 {
-    $students = Student::with(['user', 'group', 'generation'])
+    $students = Student::with(['user', 'group'])
         ->where('status', 'pending')
         ->get();
 
@@ -65,8 +65,7 @@ class StudentController extends Controller
 }
  public function getByUserId($user_id)
     {
-        // Retrieve the student along with relations like group and generation
-        $student = Student::with(['group', 'generation'])
+        $student = Student::with(['group'])
             ->where('user_id', $user_id)
             ->first();
 
@@ -112,6 +111,27 @@ public function updateGroup(Request $request, $user_id)
     return response()->json([
         'message' => 'Group updated successfully',
         'student' => $student->load('group.semester.year'),
+    ]);
+}public function getSubjectsByStudent($user_id)
+{
+    $student = Student::with([
+        'group.semester.year',
+        'group.semester.subjects.professors.user' // eager load professors + their users
+    ])
+    ->where('user_id', $user_id)
+    ->first();
+
+    if (!$student) {
+        return response()->json(['message' => 'Student not found.'], 404);
+    }
+
+    $semester = $student->group->semester;
+    $subjects = $semester->subjects;
+
+    return response()->json([
+        'year' => $semester->year,
+        'semester' => $semester,
+        'subjects' => $subjects,
     ]);
 }
 }

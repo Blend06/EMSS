@@ -33,7 +33,6 @@ class UpdateStudentRequest extends FormRequest
             'conduct_grade'  => 'nullable|string|size:1',
             'status'  => 'required|string|max:20',
             'group_id'       => 'required|exists:groups,group_id',
-            'generation_id'  => 'required|exists:generations,generation_id',
             'caretaker_name' => 'sometimes|string|max:255',
             'caretaker_phone'=> 'sometimes|string|max:20',
         ];

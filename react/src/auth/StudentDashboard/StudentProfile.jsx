@@ -115,9 +115,6 @@ const StudentProfile = () => {
                                 <span className="font-medium">Group:</span> {student?.group?.group || "N/A"}
                             </p>
                             <p>
-                                <span className="font-medium">Generation:</span> {student?.generation?.generation || "N/A"}
-                            </p>
-                            <p>
                                 <span className="font-medium">Conduct Grade:</span> {student?.conduct_grade || "N/A"}
                             </p>
                         </div>

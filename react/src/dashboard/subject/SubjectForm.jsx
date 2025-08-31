@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import axiosClient from "../../axios.js";
+import { Label } from "@/components/ui/label";
 
 const SubjectForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [semesters, setSemesters] = useState([]);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
-    syllabus_file_path: "",
+    semester: "",
   });
 
   const fetchSubject = async () => {
@@ -25,6 +27,12 @@ const SubjectForm = () => {
       console.error("Failed to fetch Subject:", error);
     }
   };
+  useEffect(() => {
+    axiosClient.get("/semester")
+      .then((res) => setSemesters(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+
 
   useEffect(() => {
     fetchSubject();
@@ -71,16 +79,23 @@ const SubjectForm = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-medium">Syllabus File Path</label>
-          <input
-            type="text"
-            name="syllabus_file_path"
-            value={formData.syllabus_file_path}
+          <Label htmlFor="semester_id">Semester</Label>
+          <select
+            id="semester_id"
+            name="semester_id"
+            value={formData.semester_id}
             onChange={handleChange}
-            className="w-full border rounded-md p-2"
-            placeholder="Subject syllabus file path"
+            className="w-full border rounded p-2"
             required
-          />
+          >
+            <option value="">Select Semester</option>
+            {semesters.map((s) => (
+              <option key={s.semester_id} value={s.semester_id}>
+                {s.semester}
+              </option>
+            ))}
+          </select>
+          {errors.semester_id && <p className="text-red-600 text-sm">{errors.semester_id[0]}</p>}
         </div>
 
         <div className="flex gap-2">

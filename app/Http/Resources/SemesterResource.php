@@ -18,6 +18,9 @@ class SemesterResource extends JsonResource
             'semester_id' => $this->semester_id,
             'semester' => $this->semester,
             'year_id' => $this->year_id,
+            'year'         => [
+                'academic_year'  => $this->year?->academic_year,   
+           ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'subjects' => $this->whenLoaded('subjects', fn() => SubjectResource::collection($this->subjects)),

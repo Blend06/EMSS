@@ -31,7 +31,6 @@ class StoreStudentRequest extends FormRequest
             'group_id'       => 'nullable|exists:groups,group_id',
             'conduct_grade'  => 'nullable|string|size:1',
             'status'  => 'nullable|string|max:20',
-            'generation_id'  => 'nullable|exists:generations,generation_id',
             'caretaker_name' => 'required|string|max:255',
             'caretaker_phone'=> 'required|string|max:20',
         ];

@@ -22,8 +22,6 @@ import SemesterForm from "./dashboard/semester/SemesterForm";
 import SemesterPage from "./dashboard/semester/SemesterPage";
 import YearForm from "./dashboard/year/YearForm";
 import YearPage from "./dashboard/year/YearPage";
-import GenerationPage from "./dashboard/generation/GenerationPage";
-import GenerationForm from "./dashboard/generation/GenerationForm";
 import SubjectPage from "./dashboard/subject/SubjectPage";
 import SubjectForm from "./dashboard/subject/SubjectForm";
 import ClassesPage from "./dashboard/classes/ClassesPage";
@@ -52,7 +50,6 @@ import AddLecture from "./auth/ProfessorDashboard/AddLecture";
 import GradeStudent from "./auth/ProfessorDashboard/GradeStudent";
 import AddAttendance from "./auth/ProfessorDashboard/AddAttendance";
 import SubjectLectures from "./auth/StudentDashboard/SubjectLectures";
-import SemesterSubjects from "./auth/StudentDashboard/SemesterSubjects";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -82,7 +79,6 @@ const AppRoutes = () => {
         <Route path="grades" element={<StudentGrades />} />
         <Route path="attendance" element={<StudentAttendance />} />
         <Route path="subject_lectures" element={<SubjectLectures />} />
-        <Route path="semester_subjects" element={<SemesterSubjects />} />
       </Route>
         
         {/* Professor Dashboard Routes */}
@@ -122,11 +118,6 @@ const AppRoutes = () => {
         <Route path="/years" element={<YearPage />} />
         <Route path="/years/new" element={<YearForm />} />
         <Route path="/years/edit/:id" element={<YearForm />} />   
-
-        {/* Generation CRUD */}
-        <Route path="/generations" element={<GenerationPage />} />
-        <Route path="/generations/new" element={<GenerationForm />} />
-        <Route path="/generations/edit/:id" element={<GenerationForm />} />       
 
         {/* Subject CRUD */}
         <Route path="/subjects" element={<SubjectPage />} />
