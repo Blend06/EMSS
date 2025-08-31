@@ -49,7 +49,9 @@ import ProfessorProfile from "./auth/ProfessorDashboard/ProfessorProfile";
 import AddLecture from "./auth/ProfessorDashboard/AddLecture";
 import GradeStudent from "./auth/ProfessorDashboard/GradeStudent";
 import AddAttendance from "./auth/ProfessorDashboard/AddAttendance";
-import SubjectLectures from "./auth/StudentDashboard/SubjectLectures";
+import SemesterDisplay from "./auth/LecturesDashboard/SemesterDisplay";
+import SubjectDisplay from "./auth/LecturesDashboard/SubjectDisplay";
+import LectureDisplay from "./auth/LecturesDashboard/LectureDisplay";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -78,8 +80,11 @@ const AppRoutes = () => {
         <Route path="schedule" element={<StudentSchedule />} />
         <Route path="grades" element={<StudentGrades />} />
         <Route path="attendance" element={<StudentAttendance />} />
-        <Route path="subject_lectures" element={<SubjectLectures />} />
+        
       </Route>
+      <Route path="semester_display/:yearId" element={<SemesterDisplay />} />
+        <Route path="subject_display/:semesterId" element={<SubjectDisplay />} />
+        <Route path="lecture_display/:subjectId" element={<LectureDisplay />} />
         
         {/* Professor Dashboard Routes */}
       <Route path="/professor_dashboard" element={<ProfessorDashboard />}>

@@ -12,14 +12,19 @@ use Illuminate\Http\Request;
 class LectureController extends Controller
 {
     public function index(Request $request)
-    {
-        $perPage = (int) $request->get('per_page', 15);
-        $lectures = Lecture::with('professorSubject')
-            ->latest('lecture_id')
-            ->paginate($perPage);
+{
+    $q = Lecture::query()->with(['professorSubject.subject', 'professorSubject.professor.user']);
 
-        return LectureResource::collection($lectures);
+    if ($request->filled('subject_id')) {
+        $q->whereHas('professorSubject', function ($query) use ($request) {
+            $query->where('subject_id', $request->query('subject_id'));
+        });
     }
+
+    $lectures = $q->get();
+
+    return LectureResource::collection($lectures);
+}
 
     public function store(StoreLectureRequest $request)
     {

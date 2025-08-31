@@ -48,7 +48,7 @@ const StudentDashboard = () => {
     { id: "schedule", label: "Schedule", icon: Calendar, route: "/student_dashboard/schedule" },
     { id: "grades", label: "Grades", icon: GraduationCap, route: "/student_dashboard/grades" },
     { id: "attendance", label: "Attendance", icon: CheckSquare, route: "/student_dashboard/attendance" },
-    { id: "lectures", label: "Lectures", icon: BookOpen, route: "/student_dashboard/subject_lectures" },
+    { id: "lectures", label: "Lectures", icon: BookOpen, route: "/semester_display" },
   ];
 
   // Conditionally filter navigation items based on student.group_id
@@ -95,27 +95,34 @@ const StudentDashboard = () => {
         <nav className="flex-1 p-4">
           <div className="space-y-2">
             {navigationItems.map((item) => {
-              const IconComponent = item.icon;
-              const isActive = activeRoute === item.id;
-              return (
-                <Button
-                  key={item.id}
-                  variant={isActive ? "default" : "ghost"}
-                  className={`w-full justify-start ${sidebarOpen ? "px-3" : "px-2"} ${
-                    isActive
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  }`}
-                  onClick={() => {
-                    setActiveRoute(item.id);
-                    navigate(item.route);
-                  }}
-                >
-                  <IconComponent className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
-                  {sidebarOpen && <span>{item.label}</span>}
-                </Button>
-              );
-            })}
+  const IconComponent = item.icon;
+  const isActive = activeRoute === item.id;
+  let route = item.route;
+
+  // If it's lectures, inject year_id
+  if (item.id === "lectures" && student?.group?.semester?.year) {
+    route = `/semester_display/${student.group.semester.year.id}`;
+  }
+
+  return (
+    <Button
+      key={item.id}
+      variant={isActive ? "default" : "ghost"}
+      onClick={() => {
+        setActiveRoute(item.id);
+        navigate(route);
+      }}
+      className={`w-full justify-start ${sidebarOpen ? "px-3" : "px-2"} ${
+        isActive
+          ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+      }`}
+    >
+      <IconComponent className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+      {sidebarOpen && <span>{item.label}</span>}
+    </Button>
+  );
+})}
           </div>
         </nav>
       </div>
