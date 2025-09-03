@@ -15,10 +15,11 @@ class LectureController extends Controller
 {
     $q = Lecture::query()->with(['professorSubject.subject', 'professorSubject.professor.user']);
 
-    if ($request->filled('subject_id')) {
-        $q->whereHas('professorSubject', function ($query) use ($request) {
-            $query->where('subject_id', $request->query('subject_id'));
-        });
+    
+
+    // 🔹 Filter by professor_subject_id if provided
+    if ($request->filled('professor_subject_id')) {
+        $q->where('professor_subject_id', $request->query('professor_subject_id'));
     }
 
     $lectures = $q->get();

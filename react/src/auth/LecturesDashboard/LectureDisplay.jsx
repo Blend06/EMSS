@@ -4,13 +4,13 @@ import axiosClient from "../../axios.js";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const LectureDisplay = () => {
-  const { subjectId } = useParams(); 
+  const { professorsubjectId } = useParams(); 
   const [Lectures, setLectures] = useState([]);
 
   useEffect(() => {
     const fetchLectures = async () => {
       try {
-        const response = await axiosClient.get(`/lectures?subject_id=${subjectId}`);
+        const response = await axiosClient.get(`/lectures?professor_subject_id=${professorsubjectId}`);
         setLectures(response.data.data || []);
         console.log(response.data.data);
       } catch (error) {
@@ -18,8 +18,8 @@ const LectureDisplay = () => {
       }
     };
 
-    if (subjectId) fetchLectures();
-  }, [subjectId]);
+    if (professorsubjectId) fetchLectures();
+  }, [professorsubjectId]);
 
   if (!Lectures.length) {
     return <div className="p-6">No Lectures found for this subject.</div>;
@@ -40,7 +40,7 @@ const LectureDisplay = () => {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Lectures for Subject {subjectId}</h1>
+      <h1 className="text-2xl font-bold">Lectures for Subject {professorsubjectId}</h1>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {Lectures.map((lecture) => {
             const href = buildFileHref(lecture.file_path);

@@ -5,38 +5,49 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const SubjectDisplay = () => {
   const { semesterId } = useParams(); 
-  const [Subjects, setSubjects] = useState([]);
+  const [professorSubjects, setProfessorSubjects] = useState([]);
 
   useEffect(() => {
-    const fetchSubjects = async () => {
+    const fetchProfessorSubjects = async () => {
       try {
-        const response = await axiosClient.get(`/subjects?semester_id=${semesterId}`);
-        setSubjects(response.data.data || []);
-        console.log(response.data.data);
+        // 1. Get subjects for the semester
+        const subRes = await axiosClient.get(`/subjects?semester_id=${semesterId}`);
+        const subjects = subRes.data.data || [];
+        
+        if (!subjects.length) return;
+
+        // 2. Extract subject_ids
+        const subjectIds = subjects.map(s => s.subject_id).join(",");
+
+        // 3. Get professor_subjects for those subjects
+        const profRes = await axiosClient.get(`/professor-subjects/by-subjects?subject_ids=${subjectIds}`);
+        setProfessorSubjects(profRes.data.data || []);
       } catch (error) {
-        console.error("Error fetching Subjects:", error);
+        console.error("Error fetching professor subjects:", error);
       }
     };
 
-    if (semesterId) fetchSubjects();
+    if (semesterId) fetchProfessorSubjects();
   }, [semesterId]);
 
-  if (!Subjects.length) {
-    return <div className="p-6">No Subjects found for this semester.</div>;
+  if (!professorSubjects.length) {
+    return <div className="p-6">No subjects found for this semester.</div>;
   }
 
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-bold">Subjects for Semester {semesterId}</h1>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {Subjects.map((sub) => (
+        {professorSubjects.map((ps) => (
           <Link
-            key={sub.subject_id}
-            to={`/lecture_display/${sub.subject_id}`}
+            key={ps.professor_subject_id}
+            to={`/lecture_display/${ps.professor_subject_id}`}
           >
             <Card className="cursor-pointer hover:shadow-md transition">
               <CardHeader>
-                <CardTitle>{sub.name}</CardTitle>
+                <CardTitle>
+                  {ps.subject_name} - {ps.professor_firstname} {ps.professor_lastname}
+                </CardTitle>
               </CardHeader>
             </Card>
           </Link>

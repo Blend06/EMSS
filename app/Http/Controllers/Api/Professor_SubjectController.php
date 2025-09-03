@@ -95,4 +95,17 @@ public function lectures($professorSubjectId)
 
         return response()->json($lecture, 201);
     }
+
+    public function bySubjects(Request $request)
+{
+    $subjectIds = $request->query('subject_ids'); // expects comma-separated IDs
+    $subjectIdsArray = explode(',', $subjectIds);
+
+    $professorSubjects = Professor_subject::with(['professor.user', 'subject'])
+        ->whereIn('subject_id', $subjectIdsArray)
+        ->get();
+
+    return Professor_subjectResource::collection($professorSubjects);
+}
+
 }

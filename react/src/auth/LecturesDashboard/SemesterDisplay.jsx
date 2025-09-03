@@ -4,29 +4,37 @@ import axiosClient from "../../axios.js";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const SemesterDisplay = () => {
-  const { yearId } = useParams(); 
+  const { yearId } = useParams();
   const [semesters, setSemesters] = useState([]);
 
   useEffect(() => {
     const fetchSemesters = async () => {
       try {
-        const response = await axiosClient.get(`/semester?year_id=${yearId}`);
+        const response = await axiosClient.get(
+          `/semester${yearId ? `?year_id=${yearId}` : ""}`
+        );
         setSemesters(response.data.data || []);
       } catch (error) {
         console.error("Error fetching semesters:", error);
       }
     };
 
-    if (yearId) fetchSemesters();
+    fetchSemesters();
   }, [yearId]);
 
   if (!semesters.length) {
-    return <div className="p-6">No semesters found for this year.</div>;
+    return (
+      <div className="p-6">
+        {yearId ? "No semesters found for this year." : "No semesters available."}
+      </div>
+    );
   }
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Semesters for Year {yearId}</h1>
+      <h1 className="text-2xl font-bold">
+        {yearId ? `Semesters for Year ${yearId}` : "All Semesters"}
+      </h1>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {semesters.map((semester) => (
           <Link
