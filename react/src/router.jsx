@@ -88,6 +88,7 @@ const AppRoutes = () => {
 </Route>
         <Route path="subject_display/:semesterId" element={<SubjectDisplay />} />
         <Route path="lecture_display/:professorsubjectId" element={<LectureDisplay />} />
+        <Route path="/lectures/create/:professorsubjectId" element={<LectureDisplay />} />
 
         {/* Professor Dashboard Routes */}
         <Route path="/professor_dashboard" element={<ProfessorDashboard />}>
