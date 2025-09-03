@@ -20,7 +20,7 @@ const SubjectDisplay = () => {
         const subjectIds = subjects.map(s => s.subject_id).join(",");
 
         // 3. Get professor_subjects for those subjects
-        const profRes = await axiosClient.get(`/professor-subjects/by-subjects?subject_ids=${subjectIds}`);
+        const profRes = await axiosClient.get(`/professor_subjects/by-subjects?subject_ids=${subjectIds}`);
         setProfessorSubjects(profRes.data.data || []);
       } catch (error) {
         console.error("Error fetching professor subjects:", error);

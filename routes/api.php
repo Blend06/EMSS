@@ -85,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/professor_subjects/by-subjects', [Professor_SubjectController::class, 'bySubjects']);
     Route::get('/professor_subjects/{id}/lectures', [Professor_SubjectController::class, 'lectures']);
     Route::post('/professor_subjects/{id}/lectures', [Professor_SubjectController::class, 'storeLecture']);    
-    Route::apiResource('professors-subjects', Professor_SubjectController::class);
+    Route::apiResource('professors_subjects', Professor_SubjectController::class);
 });
 
 //Lectures CRUD routes (API)

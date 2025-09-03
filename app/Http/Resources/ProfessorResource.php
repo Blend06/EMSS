@@ -16,7 +16,6 @@ class ProfessorResource extends JsonResource
     {
         return [
             'professor_id' => $this->professor_id,
-            'professor_subject_id' => $this->pivot->professor_subject_id ?? null,
             'user_id'      => $this->user_id,
             'user'         => [
                 'id'    => $this->user->id,
