@@ -36,4 +36,8 @@ class Professor_subject extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id', 'subject_id');
     }
+    public function lectures()
+{
+    return $this->hasMany(Lecture::class, 'professor_subject_id', 'professor_subject_id');
+}
 }

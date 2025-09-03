@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\LectureController;
 use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\AttendanceController;
-use App\Http\Controllers\Api\SubjectLectureController;
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -82,6 +82,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Professor_subjects CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/professor-subjects/{id}/lectures', [Professor_SubjectController::class, 'lectures']);
+    Route::post('/professor-subjects/{id}/lectures', [Professor_SubjectController::class, 'storeLecture']);    
     Route::apiResource('professors_subjects', Professor_SubjectController::class);
 });
 
@@ -104,8 +106,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('attendances', AttendanceController::class);
 });
-// Subject → Professors browse routes
-    Route::get('/years/{year}/semesters', [SubjectLectureController::class, 'semesterByYear']);
-    Route::get('/semesters/{semester}/subjects', [SubjectLectureController::class, 'subjectsBySemester']);
 });
     

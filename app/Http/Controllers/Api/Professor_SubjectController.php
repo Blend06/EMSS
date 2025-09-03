@@ -7,6 +7,7 @@ use App\Models\Professor_subject;
 use App\Http\Requests\StoreProfessor_subjectRequest;
 use App\Http\Requests\UpdateProfessor_subjectRequest;
 use App\Http\Resources\Professor_subjectResource;
+use Illuminate\Http\Request;
 
 class Professor_SubjectController extends Controller
 {
@@ -55,13 +56,43 @@ class Professor_SubjectController extends Controller
     return new Professor_subjectResource($professor_subject);
 }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id)
 {
     $professor_subject = Professor_subject::findOrFail($id);
     $professor_subject->delete();
     return response()->noContent();
 }
+
+public function lectures($professorSubjectId)
+    {
+        $professorSubject = Professor_subject::with(['lectures'])->find($professorSubjectId);
+
+        if (!$professorSubject) {
+            return response()->json(['message' => 'Professor-Subject not found'], 404);
+        }
+
+        return response()->json($professorSubject->lectures);
+    }
+
+    /**
+     * Store a new lecture for a given professor_subject
+     */
+    public function storeLecture(Request $request, $professorSubjectId)
+    {
+        $professorSubject = Professor_subject::find($professorSubjectId);
+
+        if (!$professorSubject) {
+            return response()->json(['message' => 'Professor-Subject not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'file_path' => 'nullable|string', 
+        ]);
+
+        $lecture = $professorSubject->lectures()->create($validated);
+
+        return response()->json($lecture, 201);
+    }
 }
