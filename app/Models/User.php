@@ -51,4 +51,7 @@ class User extends Authenticatable
             'isAdmin'           => 'boolean',
         ];
     }
+    public function student() {
+        return $this->hasOne(Student::class, 'user_id', 'id');
+    }
 }

@@ -38,7 +38,7 @@ const ProfessorProfile = () => {
                             <p className="text-muted-foreground">
                                 Here's your academic overview for today
                             </p>
-                        </div>
+                        </div>g
                     </div>
                 </header>
             </div>

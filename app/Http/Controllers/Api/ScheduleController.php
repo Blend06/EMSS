@@ -7,17 +7,34 @@ use App\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Resources\ScheduleResource;
+use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
-    $schedules = Schedule::with(['group', 'classes', 'professorSubject.professor.user', 'professorSubject.subject'])->get();
+    $q = Schedule::with([
+        'group', 
+        'classes',
+        'professorSubject.professor.user',
+        'professorSubject.subject',
+    ]);
 
-    return ScheduleResource::collection($schedules);
+    $user = $request->user();
+    $gid = $request->query('group_id');
+
+    if ($user && ($user->relationLoaded('student') ? $user->student : $user->student)) {
+        $gid = $user->student?->group_id;
+    }
+
+    if($gid) {
+        $q->where('group_id', $gid);
+    }
+
+    return ScheduleResource::collection($q->get());
 }
 
     /**

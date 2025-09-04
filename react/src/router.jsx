@@ -78,6 +78,7 @@ const AppRoutes = () => {
         <Route path="profile" element={<StudentProfile />} />
         <Route path="choose_group" element={<StudentGroup />} />
         <Route path="schedule" element={<StudentSchedule />} />
+        <Route path="schedule/:groupId" element={<StudentSchedule />} />
         <Route path="grades" element={<StudentGrades />} />
         <Route path="attendance" element={<StudentAttendance />} />
         
