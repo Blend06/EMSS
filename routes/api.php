@@ -95,6 +95,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Grades CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:sanctum')->get('/my_grades', [GradeController::class, 'myGrades']);
     Route::apiResource('grades', GradeController::class);
 });
 

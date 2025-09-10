@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\GradeResource;
 
 
+
 class GradeController extends Controller
 {
     /**
@@ -97,4 +98,30 @@ class GradeController extends Controller
         $grade->delete();
         return response()->noContent();
     }
+    /**
+ * Display grades for the currently authenticated student.
+ */
+public function myGrades(Request $request)
+{
+  $user = auth()->user();
+
+// Find the student record linked to this user
+$student = \App\Models\Student::where('user_id', $user->id)->first();
+
+if (!$student) {
+    return response()->json(['message' => 'Student not found'], 404);
+}
+
+$grades = Grade::with([
+    'student',
+    'professorSubject.professor',
+    'professorSubject.subject',
+])
+->where('student_id', $student->student_id)
+->latest('grade_id')
+->get();
+
+return GradeResource::collection($grades);
+}
+
 }
