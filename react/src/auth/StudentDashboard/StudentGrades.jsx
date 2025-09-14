@@ -63,17 +63,19 @@ const StudentGrades = () => {
             </tr>
           </thead>
           <tbody>
-            {grades.map((g) => (
-              <tr key={g.grade_id} className="text-center">
-                <td className="border px-4 py-2">{g.professorSubject.subject.name}</td>
-                <td className="border px-4 py-2">{g.professorSubject.professor.firstname}</td>
-                <td className="border px-4 py-2">{g.grade}</td>
-                <td className="border px-4 py-2">
-                  {g.date ? new Date(g.date).toLocaleDateString() : "-"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {grades.map((g) => (
+    <tr key={g.grade_id} className="text-center">
+      <td className="border px-4 py-2">{g.professor_subject?.subject_name}</td>
+      <td className="border px-4 py-2">
+        {g.professor_subject?.professor_firstname} {g.professor_subject?.professor_lastname}
+      </td>
+      <td className="border px-4 py-2">{g.grade}</td>
+      <td className="border px-4 py-2">
+        {g.updated_at ? new Date(g.updated_at).toLocaleDateString() : "-"}
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       )}
     </div>

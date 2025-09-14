@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Professor CRUD routes (API)
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/professors/user/{id}', [ProfessorController::class, 'getByUser']);
     Route::apiResource('professors', ProfessorController::class);
 });
  // Student CRUD routes (API)

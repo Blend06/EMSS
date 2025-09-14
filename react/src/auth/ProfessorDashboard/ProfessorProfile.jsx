@@ -20,7 +20,7 @@ const ProfessorProfile = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setStudent(response.data.data);
+            setProfessor(response.data.data);
         } catch (error) {
             console.error("Error fetching professor:", error);
         }
@@ -38,7 +38,7 @@ const ProfessorProfile = () => {
                             <p className="text-muted-foreground">
                                 Here's your academic overview for today
                             </p>
-                        </div>g
+                        </div>
                     </div>
                 </header>
             </div>

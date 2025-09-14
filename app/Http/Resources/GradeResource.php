@@ -17,7 +17,6 @@ class GradeResource extends JsonResource
         return [
             'grade_id' => $this->grade_id,
             'student_id' => $this->student_id,
-            'professor_subject_id' => $this->professor_subject_id,
             'grade' => $this->grade,
             'date' => $this->date ? $this->date->toDateString() : null,
 
@@ -27,18 +26,16 @@ class GradeResource extends JsonResource
                     'firstname' => $this->student->user->firstname ?? null, 
                 ];
             }),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
 
-            'professorSubject' => $this->whenLoaded('professorSubject', function () {
+            'professor_subject_id' => $this->professor_subject_id,
+            'professor_subject' => $this->whenLoaded('professorSubject', function () {
                 return [
-                    'id' => $this->professorSubject->professor_subject_id,
-                    'professor' => [
-                        'id' => $this->professorSubject->professor->professor_id ?? null,
-                        'firstname' => $this->professorSubject->professor->firstname ?? null,
-                    ],
-                    'subject' => [
-                        'id' => $this->professorSubject->subject->subject_id ?? null,
-                        'name' => $this->professorSubject->subject->name ?? null,
-                    ],
+                    'professor_subject_id' => $this->professorSubject->professor_subject_id,
+                    'professor_firstname'  => $this->professorSubject->professor?->user?->firstname,
+                    'professor_lastname'   => $this->professorSubject->professor?->user?->lastname,
+                    'subject_name'         => $this->professorSubject->subject?->name,
                 ];
             }),
         ];

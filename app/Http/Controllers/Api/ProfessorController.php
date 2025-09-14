@@ -38,4 +38,17 @@ class ProfessorController extends Controller
         $professor->delete();
         return response()->json(null, 204);
     }
+
+    public function getByUser($userId)
+{
+    $professor = Professor::where('user_id', $userId)
+        ->with('user') // eager load user for firstname, lastname, etc.
+        ->first();
+
+    if (!$professor) {
+        return response()->json(['message' => 'Professor not found'], 404);
+    }
+
+    return response()->json(['data' => $professor]);
+}
 }

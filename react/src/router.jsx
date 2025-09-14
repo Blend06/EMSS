@@ -52,6 +52,7 @@ import AddAttendance from "./auth/ProfessorDashboard/AddAttendance";
 import SemesterDisplay from "./auth/LecturesDashboard/SemesterDisplay";
 import SubjectDisplay from "./auth/LecturesDashboard/SubjectDisplay";
 import LectureDisplay from "./auth/LecturesDashboard/LectureDisplay";
+import PSubject_professor from "./auth/ProfessorDashboard/PSubject_professor";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -94,7 +95,8 @@ const AppRoutes = () => {
         <Route path="/professor_dashboard" element={<ProfessorDashboard />}>
         <Route path="profile" element={<ProfessorProfile />} />
         <Route path="add_lecture" element={<AddLecture />} />
-        <Route path="grade_student" element={<GradeStudent />} />
+        <Route path="grade_student/:professorsubjectId" element={<GradeStudent />} />
+        <Route path="ps_professor/:professorId" element={<PSubject_professor />} />
         <Route path="add_attendance" element={<AddAttendance />} />
       </Route>
 

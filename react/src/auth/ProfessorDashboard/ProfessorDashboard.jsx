@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,9 +12,36 @@ import {
   GroupIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../../Contexts/ContextProvider.jsx";
 import { Outlet } from "react-router-dom";
+import axiosClient from "../../axios.js";
+import { useEffect, useState } from "react";
 
 const ProfessorDashboard = () => {
+    const { user, token } = useStateContext();
+    const [professor, setProfessor] = useState(null);
+
+    useEffect(() => {
+        if (user?.id) {
+            fetchProfessor();
+        }
+    }, [user]);
+
+    const fetchProfessor = async () => {
+        try {
+            const response = await axiosClient.get(`/professors/user/${user.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setProfessor(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.error("Error fetching professor:", error);
+        }
+    };
+
+
    const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeRoute, setActiveRoute] = useState("dashboard");
@@ -22,7 +49,7 @@ const ProfessorDashboard = () => {
   const navigationItems = [
     { id: "profile", label: "Profile", icon: User, route: "/professor_dashboard/profile" },
     { id: "lecture", label: "Lecture", icon: BookOpen, route: "/semester_display" },
-    { id: "grade_student", label: "Grade Student", icon: GraduationCap, route: "/professor_dashboard/grade_student" },
+    { id: "grade_student", label: "Grade Student", icon: GraduationCap, route: "/professor_dashboard/ps_professor" },
     { id: "add_attendance", label: "Attendances", icon: CheckSquare, route: "/professor_dashboard/add_attendance" },
   ];
 
@@ -60,6 +87,11 @@ const ProfessorDashboard = () => {
         {navigationItems.map((item) => {
           const IconComponent = item.icon;
           const isActive = activeRoute === item.id;
+          let route = item.route;
+
+          if (item.id === "grade_student" && professor?.professor_id) {
+    route = `/professor_dashboard/ps_professor/${professor.professor_id}`;
+  }
 
           return (
             <Button
@@ -72,7 +104,7 @@ const ProfessorDashboard = () => {
               }`}
               onClick={() => {
                 setActiveRoute(item.id);
-                navigate(item.route); // 👈 Navigate to the route
+                navigate(route); // 👈 Navigate to the route
               }}
             >
               <IconComponent className={`h-5 w-5 ${sidebarOpen ? 'mr-3' : ''}`} />

@@ -14,10 +14,15 @@ class Professor_SubjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
-    $professorSubjects = Professor_subject::with(['professor.user', 'subject'])->get();
-    return Professor_subjectResource::collection($professorSubjects);
+    $query = Professor_Subject::query();
+
+    if ($request->has('professor_id')) {
+        $query->where('professor_id', $request->professor_id);
+    }
+
+    return $query->with('subject')->get();
 }
 
     /**
@@ -107,5 +112,7 @@ public function lectures($professorSubjectId)
 
     return Professor_subjectResource::collection($professorSubjects);
 }
+
+
 
 }
