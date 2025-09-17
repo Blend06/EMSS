@@ -17,14 +17,18 @@ import axiosClient from "../../axios.js";
 const StudentDashboard = () => {
   const { user, token } = useStateContext();
   const [student, setStudent] = useState(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeRoute, setActiveRoute] = useState("dashboard");
+  const navigate = useNavigate();
 
   // Fetch logged-in student
   useEffect(() => {
     if (user?.id) {
       fetchStudent();
+    } else {
+      // If no user, redirect to login
+      navigate("/login");
     }
   }, [user]);
 
@@ -38,8 +42,18 @@ const StudentDashboard = () => {
       setStudent(response.data.data);
     } catch (error) {
       console.error("Error fetching student:", error);
+      // if user not found in students table, redirect or show unauthorized
+      navigate("/"); 
+    } finally {
+      setLoading(false);
     }
   };
+
+  // loading spinner
+  if (loading) return <div className="p-6">Loading...</div>;
+
+  // No student record (unauthorized)
+  if (!student) return <div className="p-6">Unauthorized</div>;
 
   // Define all navigation items
   const allNavigationItems = [
@@ -52,14 +66,9 @@ const StudentDashboard = () => {
   ];
 
   // Conditionally filter navigation items based on student.group_id
-  const navigationItems = student
-    ? student.group === null
-      ? allNavigationItems.filter((item) => item.id === "choose_group" || item.id === "profile")
-      : allNavigationItems.filter((item) => item.id !== "choose_group")
-    : []; // empty while loading
-
-  // Show loading state if student not fetched yet
-  if (!student) return <div className="p-6">Loading...</div>;
+  const navigationItems = student.group === null
+    ? allNavigationItems.filter((item) => item.id === "choose_group" || item.id === "profile")
+    : allNavigationItems.filter((item) => item.id !== "choose_group");
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -95,34 +104,34 @@ const StudentDashboard = () => {
         <nav className="flex-1 p-4">
           <div className="space-y-2">
             {navigationItems.map((item) => {
-  const IconComponent = item.icon;
-  const isActive = activeRoute === item.id;
-  let route = item.route;
+              const IconComponent = item.icon;
+              const isActive = activeRoute === item.id;
+              let route = item.route;
 
-  // If it's lectures, inject year_id
-  if (item.id === "lectures" && student?.group?.semester?.year) {
-    route = `/semester_display/${student.group.semester.year.id}`;
-  }
+              // If it's lectures, inject year_id
+              if (item.id === "lectures" && student?.group?.semester?.year) {
+                route = `/semester_display/${student.group.semester.year.id}`;
+              }
 
-  return (
-    <Button
-      key={item.id}
-      variant={isActive ? "default" : "ghost"}
-      onClick={() => {
-        setActiveRoute(item.id);
-        navigate(route);
-      }}
-      className={`w-full justify-start ${sidebarOpen ? "px-3" : "px-2"} ${
-        isActive
-          ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
-          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-      }`}
-    >
-      <IconComponent className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
-      {sidebarOpen && <span>{item.label}</span>}
-    </Button>
-  );
-})}
+              return (
+                <Button
+                  key={item.id}
+                  variant={isActive ? "default" : "ghost"}
+                  onClick={() => {
+                    setActiveRoute(item.id);
+                    navigate(route);
+                  }}
+                  className={`w-full justify-start ${sidebarOpen ? "px-3" : "px-2"} ${
+                    isActive
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  }`}
+                >
+                  <IconComponent className={`h-5 w-5 ${sidebarOpen ? "mr-3" : ""}`} />
+                  {sidebarOpen && <span>{item.label}</span>}
+                </Button>
+              );
+            })}
           </div>
         </nav>
       </div>

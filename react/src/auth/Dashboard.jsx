@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import axiosClient from '../axios.js';
 import {
   LogOut,
   User as UserIcon,
@@ -16,48 +15,147 @@ import {
   Clock,
   FileText,
   School,
-  Home
+  Home,
+  TrendingUp,
+  Activity,
+  Database,
+  BarChart3
 } from "lucide-react";
-import { useStateContext } from "../Contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../Contexts/ContextProvider";
+import axiosClient from "../axios";
 
 const Dashboard = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { user, token, setToken, setUser } = useStateContext();
+  const [stats, setStats] = useState({
+    totalUsers: 247,
+    totalStudents: 1840,
+    totalProfessors: 89,
+    totalSubjects: 42,
+    loading: false
+  });
+
+  const { user, setToken, setUser } = useStateContext();
   const navigate = useNavigate();
-  
+
+  // 🔒 Protect dashboard — redirect if not admin
+  useEffect(() => {
+    if (!user || !(user.isAdmin === true || user.isAdmin === 1)) {
+      navigate("/"); // or navigate("/login") depending on your flow
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
+    // optional: load stats dynamically
+    setStats((prev) => ({ ...prev, loading: true }));
+    const timer = setTimeout(() => {
+      setStats((prev) => ({ ...prev, loading: false }));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const onLogout = (ev) => {
     ev.preventDefault();
-
-    axiosClient.post('/logout')
+    axiosClient
+      .post("/logout")
       .then(() => {
         setUser({});
         setToken(null);
-        navigate('/login');
+        navigate("/login");
       })
-      .catch((error) => {
-        console.error('Logout failed:', error);
+      .catch(() => {
         setUser({});
         setToken(null);
       });
   };
 
+  /** reusable cards */
+  const StatCard = ({ title, value, icon: Icon, trend, description }) => (
+    <Card className="relative overflow-hidden border-border/50 hover:border-border transition-all duration-300 hover:shadow-lg">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {title}
+        </CardTitle>
+        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <Icon className="h-4 w-4 text-primary" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="text-3xl font-bold text-foreground mb-1">
+          {stats.loading ? (
+            <div className="h-8 w-16 bg-muted rounded animate-pulse" />
+          ) : (
+            value.toLocaleString()
+          )}
+        </div>
+        <div className="flex items-center space-x-2 text-xs">
+          <TrendingUp className="h-3 w-3 text-green-500" />
+          <span className="text-green-500 font-medium">{trend}</span>
+          <span className="text-muted-foreground">{description}</span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const NavigationCard = ({ title, icon: Icon, onClick, description }) => (
+    <Card
+      className="cursor-pointer border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-md hover:scale-105 group"
+      onClick={onClick}
+    >
+      <CardContent className="p-6">
+        <div className="flex items-center space-x-4">
+          <div className="h-12 w-12 rounded-xl bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+            <Icon className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+              {title}
+            </h3>
+            <p className="text-sm text-muted-foreground">{description}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-subtle">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-background border-b border-border">
+      <header className="bg-card border-b border-border/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-              <Badge variant="secondary">Academix Pro</Badge>
+              <div className="flex items-center space-x-3">
+                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                  <Database className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <h1 className="text-2xl font-bold text-foreground">
+                  Academix Pro
+                </h1>
+              </div>
+              <Badge variant="secondary" className="hidden sm:inline-flex">
+                <Activity className="h-3 w-3 mr-1" />
+                Admin Dashboard
+              </Badge>
             </div>
-            <div className="flex items-center space-x-4">
-              
-              <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+            <div className="flex items-center space-x-3">
+              <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
+                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                System Online
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/")}
+                className="hover:bg-accent"
+              >
                 <Home className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={onLogout}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onLogout}
+                className="hover:bg-destructive/10 hover:text-destructive"
+              >
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>
@@ -68,113 +166,157 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back, {user?.firstname || "User"}! 👋
-          </h2>
-          <p className="text-muted-foreground mb-4">
-            Here's what's happening at Springfield High School today.
-          </p>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-4xl font-bold text-foreground mb-2">
+                Welcome back, {user?.firstname || "Administrator"}
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Springfield High School Management System
+              </p>
+            </div>
+            <div className="hidden lg:flex items-center space-x-2">
+              <BarChart3 className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">
+                Real-time Analytics
+              </span>
+            </div>
+          </div>
 
-          {/* Role / Entity Buttons */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard
+              title="Total Users"
+              value={stats.totalUsers}
+              icon={UserIcon}
+              trend="+12%"
+              description="vs last month"
+            />
+            <StatCard
+              title="Active Students"
+              value={stats.totalStudents}
+              icon={GraduationCap}
+              trend="+8%"
+              description="enrolled this semester"
+            />
+            <StatCard
+              title="Faculty Members"
+              value={stats.totalProfessors}
+              icon={BookOpen}
+              trend="+3%"
+              description="teaching staff"
+            />
+            <StatCard
+              title="Subjects Offered"
+              value={stats.totalSubjects}
+              icon={Layers}
+              trend="+5%"
+              description="active courses"
+            />
+          </div>
+
+          {/* Core Entities */}
+          <div className="flex items-center space-x-2 mb-6">
+            <h3 className="text-2xl font-bold text-foreground">
+              System Management
+            </h3>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+            <NavigationCard
+              title="Users"
+              icon={UserIcon}
+              description="Manage system users"
               onClick={() => navigate("/users")}
-            >
-              <UserIcon className="h-5 w-5" /> User
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Students"
+              icon={GraduationCap}
+              description="Student enrollment"
               onClick={() => navigate("/students")}
-            >
-              <UsersIcon className="h-5 w-5" /> Student
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Professors"
+              icon={BookOpen}
+              description="Faculty management"
               onClick={() => navigate("/professors")}
-            >
-              <BookOpen className="h-5 w-5" /> Professor
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Groups"
+              icon={UsersIcon}
+              description="Student groups"
               onClick={() => navigate("/groups")}
-            >
-              <Layers className="h-5 w-5" /> Group
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Subjects"
+              icon={Layers}
+              description="Course catalog"
               onClick={() => navigate("/subjects")}
-            >
-              <BookOpen className="h-5 w-5" /> Subject
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Academic Years"
+              icon={Calendar}
+              description="Year management"
               onClick={() => navigate("/years")}
-            >
-              <Calendar className="h-5 w-5" /> Year
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Semesters"
+              icon={ClipboardList}
+              description="Term periods"
               onClick={() => navigate("/semester")}
-            >
-              <ClipboardList className="h-5 w-5" /> Semester
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Classes"
+              icon={School}
+              description="Class schedules"
               onClick={() => navigate("/classes")}
-            >
-              <School className="h-5 w-5" /> Class
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+          </div>
+
+          {/* Academic Operations */}
+          <div className="flex items-center space-x-2 mb-6">
+            <h3 className="text-xl font-semibold text-foreground">
+              Academic Operations
+            </h3>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <NavigationCard
+              title="Attendance Tracking"
+              icon={ListChecks}
+              description="Monitor student attendance"
               onClick={() => navigate("/attendances")}
-            >
-              <ListChecks className="h-5 w-5" /> Attendance
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Schedule Management"
+              icon={Clock}
+              description="Timetable coordination"
               onClick={() => navigate("/schedules")}
-            >
-              <Clock className="h-5 w-5" /> Schedule
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Grade Management"
+              icon={FileText}
+              description="Academic assessments"
               onClick={() => navigate("/grades")}
-            >
-              <FileText className="h-5 w-5" /> Grade
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Lecture Hall"
+              icon={BookOpen}
+              description="Classroom assignments"
               onClick={() => navigate("/lectures")}
-            >
-              <BookOpen className="h-5 w-5" /> Lecture
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Professor Subjects"
+              icon={ClipboardList}
+              description="Teaching assignments"
               onClick={() => navigate("/professors_subjects")}
-            >
-              <ClipboardList className="h-5 w-5" /> Professor Subjects
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex items-center gap-2"
+            />
+            <NavigationCard
+              title="Pending Students"
+              icon={Clock}
+              description="Enrollment requests"
               onClick={() => navigate("/pending_students")}
-            >
-              <ClipboardList className="h-5 w-5" /> Pending Students
-            </Button>
+            />
           </div>
         </div>
       </div>

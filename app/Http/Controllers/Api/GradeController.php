@@ -124,4 +124,14 @@ $grades = Grade::with([
 return GradeResource::collection($grades);
 }
 
+public function indexByProfessorSubject($professor_subject_id)
+{
+    $grades = Grade::with('student.user') 
+        ->where('professor_subject_id', $professor_subject_id)
+        ->get();
+
+    return response()->json(['data' => $grades]);
+}
+
+
 }

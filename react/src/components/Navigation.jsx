@@ -1,32 +1,49 @@
-// Navigation.jsx - Complete fixed version
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, GraduationCap } from "lucide-react";
 import { useStateContext } from "../Contexts/ContextProvider.jsx";
-import axiosClient from '../axios.js';
+import axiosClient from "../axios.js";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const { user, token, setToken, setUser } = useStateContext();
   const isAdmin = user?.isAdmin === true;
 
-  console.log("token:", token);
+  const [studentData, setStudentData] = useState(null);
+  const [professorData, setProfessorData] = useState(null);
+
+  // Fetch student and professor info
+  useEffect(() => {
+    if (token && user?.id) {
+      axiosClient
+        .get(`/students/user/${user.id}`)
+        .then((res) => setStudentData(res.data.data))
+        .catch(() => setStudentData(null));
+
+      axiosClient
+        .get(`/professors/user/${user.id}`)
+        .then((res) => setProfessorData(res.data.data))
+        .catch(() => setProfessorData(null));
+    } else {
+      setStudentData(null);
+      setProfessorData(null);
+    }
+  }, [user, token]);
 
   const onLogout = (ev) => {
     ev.preventDefault();
-
-    axiosClient.post('/logout')
+    axiosClient
+      .post("/logout")
       .then(() => {
         setUser({});
         setToken(null);
-        navigate('/login');
+        navigate("/login");
       })
-      .catch((error) => {
-        console.error('Logout failed:', error);
+      .catch(() => {
         setUser({});
         setToken(null);
       });
@@ -34,8 +51,8 @@ const Navigation = () => {
 
   const onApply = (ev) => {
     ev.preventDefault();
-    navigate('/apply');
-  }
+    navigate("/apply");
+  };
 
   const isActive = (path) => location.pathname === path;
 
@@ -44,6 +61,16 @@ const Navigation = () => {
     { path: "/about", label: "About" },
     { path: "/contact", label: "Contact" },
   ];
+
+  // Conditions for showing dashboards and apply button
+  const showStudentDashboard =
+    studentData?.student_id && studentData?.status === "accepted" && !isAdmin;
+  const showProfessorDashboard =
+    professorData?.professor_id && !isAdmin;
+  const showApplyButton =
+    !studentData?.student_id &&
+    !professorData?.professor_id &&
+    !isAdmin;
 
   return (
     <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -78,39 +105,60 @@ const Navigation = () => {
           <div className="hidden md:flex items-center space-x-4">
             {token ? (
               <>
-              <Button
-                onClick={onLogout}
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
-              >
-                Logout
-              </Button>
-              { isAdmin &&(
-                <Link to="/dashboard">
+                <Button
+                  onClick={onLogout}
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                >
+                  Logout
+                </Button>
+
+                {isAdmin && (
+                  <Link to="/dashboard">
+                    <Button
+                      variant="outline"
+                      className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
+
+                {showStudentDashboard && (
+                  <Link to="/student_dashboard/profile">
+                    <Button
+                      variant="outline"
+                      className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                    >
+                      Student Dashboard
+                    </Button>
+                  </Link>
+                )}
+
+                {showProfessorDashboard && (
+                  <Link to="/professor_dashboard/profile">
+                    <Button
+                      variant="outline"
+                      className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                    >
+                      Professor Dashboard
+                    </Button>
+                  </Link>
+                )}
+
+                {showApplyButton && (
                   <Button
+                    onClick={onApply}
                     variant="outline"
                     className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
                   >
-                    Dashboard
+                    Apply
                   </Button>
-                </Link>
-              )
-
-              }
-              <Button
-                onClick={onApply}
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
-              >
-                Apply
-              </Button>
-              
+                )}
               </>
             ) : (
               <Link to="/login">
-                <Button variant="default">
-                  Login
-                </Button>
+                <Button variant="default">Login</Button>
               </Link>
             )}
           </div>
@@ -145,20 +193,63 @@ const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
-              
+
               {/* Mobile Auth Buttons */}
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
                 {token ? (
-                  <Button
-                    onClick={() => {
-                      onLogout();
-                      setIsOpen(false);
-                    }}
-                    variant="ghost"
-                    className="w-full text-primary hover:bg-primary hover:text-white"
-                  >
-                    Logout
-                  </Button>
+                  <>
+                    <Button
+                      onClick={() => {
+                        onLogout();
+                        setIsOpen(false);
+                      }}
+                      variant="ghost"
+                      className="w-full text-primary hover:bg-primary hover:text-white"
+                    >
+                      Logout
+                    </Button>
+
+                    {showStudentDashboard && (
+                      <Link
+                        to="/student_dashboard/profile"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Button
+                          variant="ghost"
+                          className="w-full text-primary hover:bg-primary hover:text-white"
+                        >
+                          Student Dashboard
+                        </Button>
+                      </Link>
+                    )}
+
+                    {showProfessorDashboard && (
+                      <Link
+                        to="/professor_dashboard/profile"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Button
+                          variant="ghost"
+                          className="w-full text-primary hover:bg-primary hover:text-white"
+                        >
+                          Professor Dashboard
+                        </Button>
+                      </Link>
+                    )}
+
+                    {showApplyButton && (
+                      <Button
+                        onClick={() => {
+                          onApply();
+                          setIsOpen(false);
+                        }}
+                        variant="ghost"
+                        className="w-full text-primary hover:bg-primary hover:text-white"
+                      >
+                        Apply
+                      </Button>
+                    )}
+                  </>
                 ) : (
                   <Link to="/login" onClick={() => setIsOpen(false)}>
                     <Button variant="ghost" className="w-full">
