@@ -37,15 +37,14 @@ const Dashboard = () => {
   const { user, setToken, setUser } = useStateContext();
   const navigate = useNavigate();
 
-  // 🔒 Protect dashboard — redirect if not admin
+  // Protect dashboard — redirect if not admin
   useEffect(() => {
     if (!user || !(user.isAdmin === true || user.isAdmin === 1)) {
-      navigate("/"); // or navigate("/login") depending on your flow
+      navigate("/"); 
     }
   }, [user, navigate]);
 
   useEffect(() => {
-    // optional: load stats dynamically
     setStats((prev) => ({ ...prev, loading: true }));
     const timer = setTimeout(() => {
       setStats((prev) => ({ ...prev, loading: false }));
@@ -125,9 +124,6 @@ const Dashboard = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                  <Database className="h-5 w-5 text-primary-foreground" />
-                </div>
                 <h1 className="text-2xl font-bold text-foreground">
                   Academix Pro
                 </h1>
@@ -139,8 +135,6 @@ const Dashboard = () => {
             </div>
             <div className="flex items-center space-x-3">
               <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
-                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-                System Online
               </div>
               <Button
                 variant="ghost"
@@ -172,13 +166,13 @@ const Dashboard = () => {
                 Welcome back, {user?.firstname || "Administrator"}
               </h2>
               <p className="text-lg text-muted-foreground">
-                Springfield High School Management System
+                AcademixPro School Management System
               </p>
             </div>
             <div className="hidden lg:flex items-center space-x-2">
               <BarChart3 className="h-5 w-5 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
-                Real-time Analytics
+                Analytics
               </span>
             </div>
           </div>
