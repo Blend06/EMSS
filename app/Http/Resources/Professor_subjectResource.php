@@ -20,12 +20,8 @@ class Professor_subjectResource extends JsonResource
             'subject_id'          => $this->subject_id,
 
             // Safely access professor's user
-            'professor_firstname' => $this->professor && $this->professor->user
-                ? $this->professor->user->firstname
-                : null,
-            'professor_lastname'  => $this->professor && $this->professor->user
-                ? $this->professor->user->lastname
-                : null,
+            'professor_firstname' => $this->professor ? $this->professor->user->firstname : null,
+            'professor_lastname'  => $this->professor ? $this->professor->user->lastname : null,
 
             // Safely access subject name
             'subject_name' => $this->subject ? $this->subject->name : null,

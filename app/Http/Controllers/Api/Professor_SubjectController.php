@@ -16,13 +16,17 @@ class Professor_SubjectController extends Controller
      */
     public function index(Request $request)
 {
-    $query = Professor_Subject::query();
+    $query = Professor_subject::query();
 
     if ($request->has('professor_id')) {
         $query->where('professor_id', $request->professor_id);
     }
 
-    return $query->with('subject')->get();
+    // Eager-load both professor.user and subject
+    $professorSubjects = $query->with(['professor.user', 'subject'])->get();
+
+    // Return resource collection so it uses your Resource formatting
+    return Professor_subjectResource::collection($professorSubjects);
 }
 
     /**

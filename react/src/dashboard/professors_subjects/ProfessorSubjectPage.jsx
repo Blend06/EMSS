@@ -11,6 +11,7 @@ const ProfessorSubjectPage = () => {
     try {
       const res = await axiosClient.get("/professors_subjects");
       setProfessorSubjects(res.data.data || res.data);
+      console.log(res.data);
     } catch (error) {
       console.error("Failed to fetch ProfessorSubjects:", error);
     }

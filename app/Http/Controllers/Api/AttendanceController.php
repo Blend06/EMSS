@@ -14,9 +14,15 @@ class AttendanceController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-       return AttendanceResource::collection(Attendance::all());   
-    }
+{
+    $attendances = Attendance::with([
+        'student.user',            // load student + user
+        'professorSubject.professor.user', // load professor + user
+        'professorSubject.subject' // load subject
+    ])->get();
+
+    return AttendanceResource::collection($attendances);
+}
 
     /**
      * Store a newly created resource in storage.

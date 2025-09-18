@@ -21,23 +21,37 @@ const LectureDisplay = () => {
 
 
   const fetchData = async () => {
-      try {
-        setLoading(true); // start loading
-        const [profRes, profSubRes, lecturesRes] = await Promise.all([
-          axiosClient.get(`/professors/${user.id}`),
-          axiosClient.get(`/professors_subjects/${professorsubjectId}`),
-          axiosClient.get(`/lectures?professor_subject_id=${professorsubjectId}`)
-        ]);
+  try {
+    setLoading(true);
 
-        setProfessor(profRes.data);
-        setProfessorSubject(profSubRes.data);
-        setLectures(lecturesRes.data.data || []);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false); 
+    const [profSubRes, lecturesRes] = await Promise.all([
+      axiosClient.get(`/professors_subjects/${professorsubjectId}`),
+      axiosClient.get(`/lectures?professor_subject_id=${professorsubjectId}`)
+    ]);
+
+    setProfessorSubject(profSubRes.data);
+    setLectures(lecturesRes.data.data || []);
+    console.log("lectureas", lecturesRes.data.data);  
+    console.log("profsub", profSubRes.data.data);
+    
+    try {
+      const profRes = await axiosClient.get(`/professors/user/${user.id}`);
+      setProfessor(profRes.data);
+      console.log("prof", profRes.data);
+    } catch (profErr) {
+    
+      if (profErr.response?.status === 404) {
+        setProfessor(null);
+      } else {
+        console.error("Error fetching professor:", profErr);
       }
-    };
+    }
+  } catch (err) {
+    console.error("Error fetching data:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
     
   useEffect(() => {
@@ -100,14 +114,15 @@ const LectureDisplay = () => {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Lectures</h1>
 
-          {professor?.data?.professor_id === professorSubject?.data?.professor_id && (
-            <button
-              onClick={() => setShowForm((prev) => !prev)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              + Add Lecture
-            </button>
-          )}
+          {professor &&
+  professor.data.professor_id === professorSubject.data.professor_id && (
+    <button
+      onClick={() => setShowForm((prev) => !prev)}
+      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+    >
+      + Add Lecture
+    </button>
+)}
         </div>
 
         {showForm && (
