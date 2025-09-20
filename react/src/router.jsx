@@ -80,7 +80,7 @@ const AppRoutes = () => {
         <Route path="schedule" element={<StudentSchedule />} />
         <Route path="schedule/:groupId" element={<StudentSchedule />} />
         <Route path="grades" element={<StudentGrades />} />
-        <Route path="attendance" element={<StudentAttendance />} />
+        <Route path="attendance/:studentId" element={<StudentAttendance />} />
         
       </Route>
         <Route path="semester_display">
@@ -95,7 +95,7 @@ const AppRoutes = () => {
         <Route path="profile" element={<ProfessorProfile />} />
         <Route path="grade_student/:professorsubjectId" element={<GradeStudent />} />
         <Route path="ps_professor/:professorId" element={<PSubject_professor />} />
-        <Route path="add_attendance" element={<AddAttendance />} />
+        <Route path="add_attendance/:professorId" element={<AddAttendance />} />
       </Route>
 
 

@@ -7,18 +7,32 @@ use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
-    $attendances = Attendance::with([
-        'student.user',            // load student + user
-        'professorSubject.professor.user', // load professor + user
-        'professorSubject.subject' // load subject
+    $query = Attendance::query();
+
+    
+
+    if ($request->has('student_id')) {
+        $query->where('student_id', $request->student_id);
+    }
+
+    if ($request->has('professor_subject_ids')) {
+        $ids = explode(',', $request->professor_subject_ids);
+        $query->whereIn('professor_subject_id', $ids);
+    }
+
+    $attendances = $query->with([
+        'student.user',           
+        'professorSubject.professor.user',
+        'professorSubject.subject' 
     ])->get();
 
     return AttendanceResource::collection($attendances);

@@ -14,7 +14,7 @@ const PSubject_professor = () => {
         const fetchProfessorSubjects = async () => {
             try {
                 const response = await axiosClient.get(`/professors_subjects?professor_id=${professorId}`)
-                setProfessorSubjects(response.data|| []);
+                setProfessorSubjects(response.data.data|| []);
                 console.log(response.data);
             } catch (error) {
                 console.error("Error fetching professor subjects:", error);
@@ -33,7 +33,7 @@ const PSubject_professor = () => {
           >
             <Card className="cursor-pointer hover:shadow-md transition">
               <CardHeader>
-                <CardTitle>{ps.subject?.name}</CardTitle>
+                <CardTitle>{ps.subject_name}</CardTitle>
               </CardHeader>
             </Card>
           </Link>

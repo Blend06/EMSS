@@ -112,6 +112,9 @@ const StudentDashboard = () => {
               if (item.id === "lectures" && student?.group?.semester?.year) {
                 route = `/semester_display/${student.group.semester.year.id}`;
               }
+              if (item.id === "attendance" && student?.student_id) {
+                route = `attendance/${student.student_id}`;
+              }
 
               return (
                 <Button

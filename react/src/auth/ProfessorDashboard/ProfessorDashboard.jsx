@@ -78,7 +78,7 @@ const ProfessorDashboard = () => {
       id: "add_attendance",
       label: "Attendances",
       icon: CheckSquare,
-      route: "/professor_dashboard/add_attendance",
+      route: `/professor_dashboard/add_attendance/${professor.professor_id}`,
     },
   ];
 
