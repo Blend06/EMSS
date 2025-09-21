@@ -29,35 +29,44 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const payload = {
-      email: formData.email,
-      password: formData.password,
-    };
+    try {
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+      };
 
-    const { data } = await axiosClient.post("/login", payload);
+      const { data } = await axiosClient.post("/login", payload);
 
-    console.log("Response data:", data);
+      console.log("Response data:", data);
 
-    setUser(data.user);
-    setToken(data.token);
+      setUser(data.user);
+      // store access token
+      setToken(data.access_token || data.token);
 
-  if (Boolean(data.user.isAdmin)) {
-      navigate("/dashboard"); 
-    } else {
-      navigate("/"); 
-    } } catch (err) {
-    if (err.response && err.response.status === 422) {
-      console.log("Validation Errors:", err.response.data.errors);
-      setError(err.response.data.errors);
-    } else {
-      console.error("An unexpected error occurred:", err);
-      setError("An unexpected error occurred");
+      // store refresh token if it comes as JSON
+      if (data.refresh_token) {
+        localStorage.setItem("REFRESH_TOKEN", data.refresh_token);
+      }
+
+      // navigate based on user role
+      if (Boolean(data.user.isAdmin)) {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        console.log("Validation Errors:", err.response.data.errors);
+        setError(err.response.data.errors);
+      } else {
+        console.error("An unexpected error occurred:", err);
+        setError("An unexpected error occurred");
+      }
     }
-  }
-};
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4">
