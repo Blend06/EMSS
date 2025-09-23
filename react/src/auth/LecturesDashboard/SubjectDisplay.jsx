@@ -36,7 +36,7 @@ const SubjectDisplay = () => {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Subjects for Semester {semesterId}</h1>
+      <h1 className="text-2xl font-bold">Subjects</h1>
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {professorSubjects.map((ps) => (
           <Link

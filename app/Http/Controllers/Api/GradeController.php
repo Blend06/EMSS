@@ -103,26 +103,33 @@ class GradeController extends Controller
  */
 public function myGrades(Request $request)
 {
-  $user = auth()->user();
+    $user = auth()->user();
 
-// Find the student record linked to this user
-$student = \App\Models\Student::where('user_id', $user->id)->first();
+    // Find the student record linked to this user
+    $student = \App\Models\Student::where('user_id', $user->id)->first();
 
-if (!$student) {
-    return response()->json(['message' => 'Student not found'], 404);
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+
+    $grades = Grade::with([
+        'student',
+        'professorSubject.professor',
+        'professorSubject.subject',
+    ])
+    ->where('student_id', $student->student_id)
+    ->latest('grade_id')
+    ->get();
+
+    // Calculate the average grade
+    $average = $grades->avg('grade');
+
+    return response()->json([
+        'data' => GradeResource::collection($grades),
+        'average' => $average,
+    ]);
 }
 
-$grades = Grade::with([
-    'student',
-    'professorSubject.professor',
-    'professorSubject.subject',
-])
-->where('student_id', $student->student_id)
-->latest('grade_id')
-->get();
-
-return GradeResource::collection($grades);
-}
 
 public function indexByProfessorSubject($professor_subject_id)
 {

@@ -6,6 +6,7 @@ const StudentGrades = () => {
   const { user, token } = useStateContext();
   const [student, setStudent] = useState(null);
   const [grades, setGrades] = useState([]);
+  const [Average, setAverage] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch logged-in student
@@ -35,6 +36,7 @@ const StudentGrades = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     setGrades(response.data.data || []);
+    setAverage(response.data.average);
   } catch (error) {
     console.error("Error fetching grades:", error.response || error);
   } finally {
@@ -76,6 +78,15 @@ const StudentGrades = () => {
     </tr>
   ))}
 </tbody>
+ {Average !== null && (
+    <tfoot>
+      <tr className="font-bold bg-gray-50 text-center">
+        <td colSpan="2" className="border px-4 py-2">Average</td>
+        <td className="border px-4 py-2">{Average.toFixed(2)}</td>
+        <td className="border px-4 py-2"></td>
+      </tr>
+    </tfoot>
+  )}
         </table>
       )}
     </div>
