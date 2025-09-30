@@ -27,12 +27,13 @@ import axiosClient from "../axios";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
-    totalUsers: 247,
-    totalStudents: 1840,
-    totalProfessors: 89,
-    totalSubjects: 42,
+    totalUsers: 0,
+    totalStudents: 0,
+    totalProfessors: 0,
+    totalSubjects: 0,
     loading: false
   });
+
 
   const { user, setToken, setUser } = useStateContext();
   const navigate = useNavigate();
@@ -45,12 +46,32 @@ const Dashboard = () => {
   }, [user, navigate]);
 
   useEffect(() => {
-    setStats((prev) => ({ ...prev, loading: true }));
-    const timer = setTimeout(() => {
-      setStats((prev) => ({ ...prev, loading: false }));
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  const fetchStats = async () => {
+    try {
+      setStats(prev => ({ ...prev, loading: true }));
+
+      const [usersRes, studentsRes, professorsRes, subjectsRes] = await Promise.all([
+        axiosClient.get("/users"),
+        axiosClient.get("/students"),
+        axiosClient.get("/professors"),
+        axiosClient.get("/subjects")
+      ]);
+
+      setStats({
+        totalUsers: usersRes.data.length,
+        totalStudents: studentsRes.data.data.length,
+        totalProfessors: professorsRes.data.data.length,
+        totalSubjects: subjectsRes.data.data.length,
+        loading: false
+      });
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+      setStats(prev => ({ ...prev, loading: false }));
+    }
+  };
+
+  fetchStats();
+}, []);
 
   const onLogout = (ev) => {
     ev.preventDefault();
@@ -83,14 +104,10 @@ const Dashboard = () => {
           {stats.loading ? (
             <div className="h-8 w-16 bg-muted rounded animate-pulse" />
           ) : (
-            value.toLocaleString()
+             Number(value || 0).toLocaleString()
           )}
         </div>
-        <div className="flex items-center space-x-2 text-xs">
-          <TrendingUp className="h-3 w-3 text-green-500" />
-          <span className="text-green-500 font-medium">{trend}</span>
-          <span className="text-muted-foreground">{description}</span>
-        </div>
+        
       </CardContent>
     </Card>
   );
@@ -187,21 +204,21 @@ const Dashboard = () => {
               description="vs last month"
             />
             <StatCard
-              title="Active Students"
+              title="Total Students"
               value={stats.totalStudents}
               icon={GraduationCap}
               trend="+8%"
               description="enrolled this semester"
             />
             <StatCard
-              title="Faculty Members"
+              title="Total Professors"
               value={stats.totalProfessors}
               icon={BookOpen}
               trend="+3%"
               description="teaching staff"
             />
             <StatCard
-              title="Subjects Offered"
+              title="Total Subjects"
               value={stats.totalSubjects}
               icon={Layers}
               trend="+5%"
