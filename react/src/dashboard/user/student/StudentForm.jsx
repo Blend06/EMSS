@@ -145,7 +145,7 @@ const StudentForm = () => {
             <option value="">-- Select Group --</option>
             {groups.map((g) => (
               <option key={g.group_id} value={g.group_id}>
-                {g.group}
+                {g.group} {g.semester} {g.year}
               </option>
             ))}
           </select>

@@ -27,8 +27,8 @@ class StudentResource extends JsonResource
                 'id'         => $this->group->id,
                 'group'      => $this->group->group,
                 'semester'   => $this->group->semester ? [
-                    'id'       => $this->group->semester->id,
-                    'semester' => $this->group->semester->semester_id,
+                    'id'       => $this->group->semester->semester_id,
+                    'semester' => $this->group->semester->semester,
                     'year'     => $this->group->semester->year ? [
                         'id'            => $this->group->semester->year->year_id,
                         'academic_year' => $this->group->semester->year->academic_year,

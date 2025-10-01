@@ -43,7 +43,7 @@ const SemesterDisplay = () => {
           >
             <Card className="cursor-pointer hover:shadow-md transition">
               <CardHeader>
-                <CardTitle>{semester.semester}</CardTitle>
+                <CardTitle>{semester.semester} {semester.year?.academic_year}</CardTitle>
               </CardHeader>
             </Card>
           </Link>

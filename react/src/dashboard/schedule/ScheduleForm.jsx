@@ -162,7 +162,7 @@ const ScheduleForm = () => {
             <option value="">-- Select a Group --</option>
             {groups.map((group) => (
               <option key={group.group_id} value={group.group_id}>
-                {group.group}
+                {group.group} {group.semester} {group.year}
               </option>
             ))}
           </select>

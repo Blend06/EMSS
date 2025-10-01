@@ -63,7 +63,7 @@ const SubjectPage = () => {
                 <Button
                   size="sm"
                   variant="destructive"
-                  onClick={() => handleDelete(Subject.Subject_id)}
+                  onClick={() => handleDelete(Subject.subject_id)}
                 >
                   Delete
                 </Button>
